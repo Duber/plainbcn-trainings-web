@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { Component } from 'react'
 import { useTable, useFilters } from 'react-table'
-import './App.css';
+import './App.css'
+import Api from './Api'
 
 // This is a custom filter UI for selecting
 // a unique option from a list
@@ -12,7 +13,7 @@ function SelectColumnFilter({
   const options = React.useMemo(() => {
     const options = new Set()
     preFilteredRows.forEach(row => {
-      options.add(row.values[id])
+      options.add(`${row.values[id]}`)
     })
     return [...options.values()]
   }, [id, preFilteredRows])
@@ -98,9 +99,16 @@ function Table({ columns, data }) {
   )
 }
 
-function App() {
-  const columns = React.useMemo(
-    () => [
+class App extends Component {
+  constructor() {
+    super();
+    this.state = { data: [], columns: [] };
+  }
+
+  async componentDidMount() {
+    const api = new Api()
+    const data = await api.getAll()
+    const columns = [
       {
         Header: 'area',
         accessor: 'area',
@@ -118,33 +126,21 @@ function App() {
       },
       {
         Header: 'accomplished',
-        accessor: 'accomplished',
+        accessor: d => d.accomplished.toString(),
         Filter: SelectColumnFilter
       },
-    ],
-    []
-  )
+    ]
+    this.setState({ data: data })
+    this.setState({ columns: columns })
+  }
 
-  const data = React.useMemo(() => [
-    {
-      area: 'backend',
-      level: 'basic',
-      title: 'backend 101',
-      accomplished: 'true'
-    },
-    {
-      area: 'frontend',
-      level: 'basic',
-      title: 'frontend 101',
-      accomplished: 'false'
-    }
-  ], [])
-
-  return (
-    <div className="App">
-      <Table columns={columns} data={data} />
-    </div>
-  );
+  render() {
+    return (
+      <div className="App" >
+        <Table columns={this.state.columns} data={this.state.data} />
+      </div>
+    );
+  }
 }
 
-export default App;
+export default App
