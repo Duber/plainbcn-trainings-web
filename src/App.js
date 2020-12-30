@@ -1,6 +1,56 @@
 import React from 'react'
-import { useTable } from 'react-table'
+import { useTable, useFilters } from 'react-table'
 import './App.css';
+
+// This is a custom filter UI for selecting
+// a unique option from a list
+function SelectColumnFilter({
+  column: { filterValue, setFilter, preFilteredRows, id },
+}) {
+  // Calculate the options for filtering
+  // using the preFilteredRows
+  const options = React.useMemo(() => {
+    const options = new Set()
+    preFilteredRows.forEach(row => {
+      options.add(row.values[id])
+    })
+    return [...options.values()]
+  }, [id, preFilteredRows])
+
+  // Render a multi-select box
+  return (
+    <select
+      value={filterValue}
+      onChange={e => {
+        setFilter(e.target.value || undefined)
+      }}
+    >
+      <option value="">All</option>
+      {options.map((option, i) => (
+        <option key={i} value={option}>
+          {option}
+        </option>
+      ))}
+    </select>
+  )
+}
+
+// Define a default UI for filtering
+function TextSearchColumnFilter({
+  column: { filterValue, preFilteredRows, setFilter },
+}) {
+  const count = preFilteredRows.length
+
+  return (
+    <input
+      value={filterValue || ''}
+      onChange={e => {
+        setFilter(e.target.value || undefined) // Set undefined to remove the filter entirely
+      }}
+      placeholder={`Search ${count} records...`}
+    />
+  )
+}
 
 function Table({ columns, data }) {
   // Use the state and functions returned from useTable to build your UI
@@ -13,7 +63,9 @@ function Table({ columns, data }) {
   } = useTable({
     columns,
     data,
-  })
+  },
+    useFilters
+  )
 
   // Render the UI for your table
   return (
@@ -22,7 +74,10 @@ function Table({ columns, data }) {
         {headerGroups.map(headerGroup => (
           <tr {...headerGroup.getHeaderGroupProps()}>
             {headerGroup.headers.map(column => (
-              <th {...column.getHeaderProps()}>{column.render('Header')}</th>
+              <th {...column.getHeaderProps()}>
+                {column.render('Header')}
+                <div>{column.canFilter ? column.render('Filter') : null}</div>
+              </th>
             ))}
           </tr>
         ))}
@@ -49,18 +104,22 @@ function App() {
       {
         Header: 'area',
         accessor: 'area',
+        Filter: SelectColumnFilter
       },
       {
         Header: 'level',
         accessor: 'level',
+        Filter: SelectColumnFilter
       },
       {
         Header: 'title',
         accessor: 'title',
+        Filter: TextSearchColumnFilter
       },
       {
         Header: 'accomplished',
         accessor: 'accomplished',
+        Filter: SelectColumnFilter
       },
     ],
     []
