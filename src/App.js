@@ -107,7 +107,8 @@ class App extends Component {
 
   async componentDidMount() {
     const api = new Api()
-    const data = await api.getAll()
+    let data = await api.getAll()
+    data = data.sort((a, b) => (a.area > b.area) ? 1 : (a.area === b.area) ? ((a.level > b.level) ? 1 : -1) : -1 )
     const columns = [
       {
         Header: 'area',
