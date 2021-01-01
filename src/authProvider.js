@@ -17,7 +17,7 @@ const config = {
 // Authentication Parameters
 const authenticationParameters = {
     scopes: [
-        'user.read'
+        'api://24ebf232-d6f5-4e7b-bacd-e95ea35fca58/auth'
     ]
 }
 
