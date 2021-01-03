@@ -1,10 +1,10 @@
-import { authProvider } from './authProvider';
+import { authProvider } from './authProvider.js';
 
 export default class Api {
     async getAll() {
         const tokenResponse = await authProvider.getAccessToken()
         const token = tokenResponse.accessToken
-        const url = 'http://localhost:3001/api/skills';
+        const url = process.env.REACT_APP_SKILL_API_URL;
         const options = {
             headers: {
                 Authorization: `Bearer ${token}`
