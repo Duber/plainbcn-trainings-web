@@ -5,6 +5,15 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import { AzureAD } from 'react-aad-msal';
 import { authProvider } from './authProvider';
+import { ApplicationInsights } from '@microsoft/applicationinsights-web'
+
+const appInsights = new ApplicationInsights({
+  config: {
+    instrumentationKey: process.env.REACT_APP_APPINSIGHTS_INSTRUMENTATIONKEY
+  }
+});
+appInsights.loadAppInsights();
+appInsights.trackPageView();
 
 ReactDOM.render(
   <React.StrictMode>
