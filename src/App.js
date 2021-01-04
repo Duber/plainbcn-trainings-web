@@ -102,13 +102,13 @@ function Table({ columns, data }) {
 class App extends Component {
   constructor() {
     super();
-    this.state = { data: [], columns: [] };
+    this.state = { data: [], columns: [], loaded: false };
   }
 
   async componentDidMount() {
     const api = new Api()
     let data = await api.getAll()
-    data = data.sort((a, b) => (a.area > b.area) ? 1 : (a.area === b.area) ? ((a.level > b.level) ? 1 : -1) : -1 )
+    data = data.sort((a, b) => (a.area > b.area) ? 1 : (a.area === b.area) ? ((a.level > b.level) ? 1 : -1) : -1)
     const columns = [
       {
         Header: 'area',
@@ -131,14 +131,14 @@ class App extends Component {
         Filter: SelectColumnFilter
       },
     ]
-    this.setState({ data: data })
-    this.setState({ columns: columns })
+    this.setState({ data: data, columns: columns, loaded: true })
   }
 
   render() {
     return (
       <div className="App" >
-        <Table columns={this.state.columns} data={this.state.data} />
+        {!this.state.loaded && <p>Loading ...</p>}
+        {this.state.loaded && <Table columns={this.state.columns} data={this.state.data} />}
       </div>
     );
   }
