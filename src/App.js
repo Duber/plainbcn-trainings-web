@@ -1,7 +1,9 @@
 import React, { Component } from 'react'
 import { useTable, useFilters } from 'react-table'
-import './App.css'
-import Api from './Api'
+import './app.css'
+import Api from './api'
+import 'bootstrap/dist/css/bootstrap.min.css';
+import BTable from 'react-bootstrap/Table';
 
 // This is a custom filter UI for selecting
 // a unique option from a list
@@ -70,7 +72,7 @@ function Table({ columns, data }) {
 
   // Render the UI for your table
   return (
-    <table {...getTableProps()}>
+    <BTable striped bordered hover size="sm" {...getTableProps()}>
       <thead>
         {headerGroups.map(headerGroup => (
           <tr {...headerGroup.getHeaderGroupProps()}>
@@ -95,7 +97,7 @@ function Table({ columns, data }) {
           )
         })}
       </tbody>
-    </table>
+    </BTable>
   )
 }
 
@@ -111,22 +113,22 @@ class App extends Component {
     data = data.sort((a, b) => (a.area > b.area) ? 1 : (a.area === b.area) ? ((a.level > b.level) ? 1 : -1) : -1)
     const columns = [
       {
-        Header: 'area',
+        Header: 'Area',
         accessor: 'area',
         Filter: SelectColumnFilter
       },
       {
-        Header: 'level',
+        Header: 'Level',
         accessor: 'level',
         Filter: SelectColumnFilter
       },
       {
-        Header: 'title',
+        Header: 'Title',
         accessor: 'title',
         Filter: TextSearchColumnFilter
       },
       {
-        Header: 'accomplished',
+        Header: 'Accomplished?',
         accessor: d => d.accomplished.toString(),
         Filter: SelectColumnFilter
       },
@@ -136,7 +138,7 @@ class App extends Component {
 
   render() {
     return (
-      <div className="App" >
+      <div className="app" >
         {!this.state.loaded && <p>Loading ...</p>}
         {this.state.loaded && <Table columns={this.state.columns} data={this.state.data} />}
       </div>
