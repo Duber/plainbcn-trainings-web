@@ -1,4 +1,4 @@
-import { authProvider } from './authProvider.js';
+import { authProvider } from '../auth-provider/auth-provider.js';
 
 export default class Api {
     async getAll() {

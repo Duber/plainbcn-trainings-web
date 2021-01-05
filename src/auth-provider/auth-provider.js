@@ -1,4 +1,3 @@
-// authProvider.js
 import { MsalAuthProvider, LoginType } from 'react-aad-msal';
 
 const config = {
