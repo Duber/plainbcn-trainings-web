@@ -3,6 +3,10 @@ import './app.css'
 import Api from '../api/api'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SkillTable from '../skill-table/skill-table'
+import WelcomeMessage from '../welcome-message/welcome-message'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 class App extends Component {
   constructor() {
@@ -18,9 +22,14 @@ class App extends Component {
 
   render() {
     return (
-      <div className="app" >
-        <SkillTable data={this.state.data} />
-      </div>
+      <Container className="app">
+        <Row>
+          <Col><WelcomeMessage/></Col>
+        </Row>
+        <Row>
+          <Col><SkillTable data={this.state.data} /></Col>
+        </Row>
+      </Container>
     );
   }
 }

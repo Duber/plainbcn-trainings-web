@@ -8,6 +8,7 @@
     "@testing-library/react": "^11.2.2",
     "@testing-library/user-event": "^12.6.0",
     "bootstrap": "^4.5.3",
+    "jwt-decode": "^3.1.2",
     "msal": "^1.4.4",
     "react": "^17.0.1",
     "react-aad-msal": "^2.3.5",

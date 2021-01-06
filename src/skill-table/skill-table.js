@@ -132,7 +132,7 @@ export default class SkillTable extends Component {
         return (
             <div className="skillTable" >
                 <Table columns={columns} data={this.props.data} />
-                {this.props.data.length == 0 && <p>Loading ...</p>}
+                {this.props.data.length === 0 && <p>Loading ...</p>}
             </div>
         );
     }
