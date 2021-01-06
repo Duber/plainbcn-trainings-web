@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { useTable, useFilters } from 'react-table'
 import BTable from 'react-bootstrap/Table';
+import './skill-table.css'
 
 // This is a custom filter UI for selecting
 // a unique option from a list
@@ -118,10 +119,14 @@ const columns = [
     },
     {
         Header: 'Accomplished?',
-        accessor: d => d.accomplished.toString(),
+        accessor: d => capitalize((d.accomplished ?? "not evaluated").toString()),
         Filter: SelectColumnFilter
     },
 ]
+
+function capitalize(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+}
 
 function sortData(data) {
     return data.sort((a, b) => (a.area > b.area) ? 1 : (a.area === b.area) ? ((a.level > b.level) ? 1 : -1) : -1)
