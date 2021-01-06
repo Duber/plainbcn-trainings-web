@@ -118,7 +118,7 @@ const columns = [
         Filter: TextSearchColumnFilter
     },
     {
-        Header: 'Accomplished?',
+        Header: 'Qualified?',
         accessor: d => capitalize((d.accomplished ?? "not evaluated").toString()),
         Filter: SelectColumnFilter
     },
