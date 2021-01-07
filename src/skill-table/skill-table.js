@@ -118,13 +118,13 @@ const columns = [
         Header: 'Title',
         accessor: 'title',
         Filter: TextSearchColumnFilter,
-        width: "65vmax"
+        width: "70vmax"
     },
     {
         Header: 'Qualified?',
         accessor: d => capitalize((d.accomplished ?? "not evaluated").toString()),
         Filter: SelectColumnFilter,
-        width: "15vmax"
+        width: "10vmax"
     },
 ]
 
