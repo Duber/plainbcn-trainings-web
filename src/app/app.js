@@ -24,7 +24,7 @@ class App extends Component {
 
   render() {
     return (
-      <Container className="app">
+      <Container fluid className="app">
         <Row className="py-2 align-items-center">
           <Col><WelcomeMessage/></Col>
           <Col className="d-flex justify-content-end"><Button variant="outline-secondary" onClick={authProvider.logout}>Logout</Button></Col>
