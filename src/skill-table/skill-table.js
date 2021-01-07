@@ -77,7 +77,7 @@ function Table({ columns, data }) {
                 {headerGroups.map(headerGroup => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
                         {headerGroup.headers.map(column => (
-                            <th {...column.getHeaderProps()}>
+                            <th style={{ width: column.width }} {...column.getHeaderProps()}>
                                 {column.render('Header')}
                                 <div>{column.canFilter ? column.render('Filter') : null}</div>
                             </th>
@@ -105,22 +105,26 @@ const columns = [
     {
         Header: 'Area',
         accessor: 'area',
-        Filter: SelectColumnFilter
+        Filter: SelectColumnFilter,
+        width: "10vmax"
     },
     {
         Header: 'Level',
         accessor: 'level',
-        Filter: SelectColumnFilter
+        Filter: SelectColumnFilter,
+        width: "10vmax"
     },
     {
         Header: 'Title',
         accessor: 'title',
-        Filter: TextSearchColumnFilter
+        Filter: TextSearchColumnFilter,
+        width: "65vmax"
     },
     {
         Header: 'Qualified?',
         accessor: d => capitalize((d.accomplished ?? "not evaluated").toString()),
-        Filter: SelectColumnFilter
+        Filter: SelectColumnFilter,
+        width: "15vmax"
     },
 ]
 
