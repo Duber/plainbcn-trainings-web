@@ -1,0 +1,6 @@
+.freeTrackTable th select,
+input,
+option {
+  height: 1.5em;
+  min-width: 100%;
+}

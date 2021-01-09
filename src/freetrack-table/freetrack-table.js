@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
 import { useTable, useFilters } from 'react-table'
 import BTable from 'react-bootstrap/Table';
-import './skill-table.css'
+import './freetrack-table.css'
 
 // This is a custom filter UI for selecting
 // a unique option from a list
@@ -103,6 +103,12 @@ function Table({ columns, data }) {
 
 const columns = [
     {
+        Header: 'Type',
+        accessor: 'type',
+        Filter: SelectColumnFilter,
+        width: "10vmax"
+    },
+    {
         Header: 'Area',
         accessor: 'area',
         Filter: SelectColumnFilter,
@@ -118,28 +124,30 @@ const columns = [
         Header: 'Title',
         accessor: 'title',
         Filter: TextSearchColumnFilter,
-        width: "60vmax"
+        width: "40vmax"
     },
     {
-        Header: 'Qualified?',
-        accessor: d => capitalize((d.accomplished ?? "not evaluated").toString()),
-        Filter: SelectColumnFilter,
+        Header: 'Scheduled',
+        accessor: 'scheduled',
+        disableFilters: true,
         width: "10vmax"
     },
+    {
+        Header: 'Likes',
+        accessor: 'likes',
+        disableFilters: true,
+        width: "5vmax"
+    }
 ]
 
-function capitalize(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-}
-
 function sortData(data) {
-    return data.sort((a, b) => (a.area > b.area) ? 1 : (a.area === b.area) ? ((a.level > b.level) ? 1 : -1) : -1)
+    return data.sort((a, b) => (a.likes > b.likes) ? 1 : -1)
 }
 
-export default class SkillTable extends Component {
+export default class FreeTrackTable extends Component {
     render() {
         return (
-            <div className="skillTable" >
+            <div className="freeTrackTable" >
                 <Table columns={columns} data={this.props.data} />
                 {this.props.data.length === 0 && <p>Loading ...</p>}
             </div>
