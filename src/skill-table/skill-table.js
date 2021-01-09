@@ -79,7 +79,15 @@ function Table({ columns, data }) {
                         {headerGroup.headers.map(column => (
                             <th style={{ width: column.width }} {...column.getHeaderProps()}>
                                 {column.render('Header')}
-                                <div>{column.canFilter ? column.render('Filter') : null}</div>
+                            </th>
+                        ))}
+                    </tr>
+                ))}
+                {headerGroups.map(headerGroup => (
+                    <tr {...headerGroup.getHeaderGroupProps()}>
+                        {headerGroup.headers.map(column => (
+                            <th style={{ width: column.width }} {...column.getHeaderProps()}>
+                                {column.canFilter ? column.render('Filter') : null}
                             </th>
                         ))}
                     </tr>
