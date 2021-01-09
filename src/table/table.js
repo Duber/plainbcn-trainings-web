@@ -52,7 +52,7 @@ export function TextSearchColumnFilter({
     )
 }
 
-export function Table({ columns, data }) {
+export function Table({ columns, data, initialState }) {
     // Use the state and functions returned from useTable to build your UI
     const {
         getTableProps,
@@ -63,6 +63,7 @@ export function Table({ columns, data }) {
     } = useTable({
         columns,
         data,
+        initialState: initialState
     },
         useFilters
     )
