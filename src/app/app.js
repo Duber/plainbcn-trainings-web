@@ -1,14 +1,12 @@
-import React, { Component } from 'react'
+import React, { Component, Fragment } from 'react'
 import './app.css'
 import Api from '../api/api'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import SkillTable from '../skill-table/skill-table'
-import WelcomeMessage from '../welcome-message/welcome-message'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Button from 'react-bootstrap/Button'
-import { authProvider } from '../auth-provider/auth-provider';
+import Navbar from '../navbar/navbar'
 
 class App extends Component {
   constructor() {
@@ -24,15 +22,14 @@ class App extends Component {
 
   render() {
     return (
-      <Container fluid className="app">
-        <Row className="py-2 align-items-center">
-          <Col><WelcomeMessage/></Col>
-          <Col className="d-flex justify-content-end"><Button variant="outline-secondary" onClick={authProvider.logout}>Logout</Button></Col>
-        </Row>
-        <Row>
-          <Col><SkillTable data={this.state.data} /></Col>
-        </Row>
-      </Container>
+      <Fragment>
+        <Navbar/>
+        <Container fluid>
+          <Row>
+            <Col><SkillTable data={this.state.data} /></Col>
+          </Row>
+        </Container>
+      </Fragment>
     );
   }
 }
