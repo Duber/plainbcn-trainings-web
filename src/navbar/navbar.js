@@ -19,7 +19,7 @@ export default class Navbar extends Component {
                 <BNavbar.Toggle />
                 <BNavbar.Collapse>
                     <Nav className="mr-auto">
-                        <LinkContainer to="/"><Nav.Link>Skills</Nav.Link></LinkContainer>
+                        <LinkContainer exact to="/"><Nav.Link>Skills</Nav.Link></LinkContainer>
                         <LinkContainer to="/freetrack"><Nav.Link>Free Track</Nav.Link></LinkContainer>
                     </Nav>
                     <Nav className="justify-content-end">

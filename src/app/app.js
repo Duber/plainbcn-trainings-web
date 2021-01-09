@@ -7,8 +7,8 @@ import FreeTrackTable from '../freetrack-table/freetrack-table'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Navbar from '../navbar/navbar'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import Navbar from '../navbar/navbar'
 
 class App extends Component {
   constructor() {
@@ -28,7 +28,7 @@ class App extends Component {
     return (
       <Fragment>
         <Router>
-          <Navbar />
+          <Navbar/>
           <Container fluid>
             <Row>
               <Col>
