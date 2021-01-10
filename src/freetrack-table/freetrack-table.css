@@ -1,6 +1,17 @@
-.freeTrackTable th select,
+.freetrack-table th select,
 input,
 option {
   height: 1.5em;
   min-width: 100%;
+}
+
+.freetrack-likecol, .freetrack-likecol:focus, .freetrack-likecol:active {
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.freetrack-likecol__liked,
+.freetrack-likecol:hover {
+  color: red;
 }
