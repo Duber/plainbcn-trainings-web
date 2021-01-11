@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import { Table, SelectColumnFilter, TextSearchColumnFilter } from '../table/table';
 import './freetrack-table.css'
+import Api from '../api/api'
 
 function ScheduledColumnFilter({
     column: { filterValue, setFilter, preFilteredRows, id },
@@ -85,8 +86,18 @@ function renderLikes({ row, value }) {
     )
 }
 
-function toggleLike(e) {
-    console.log(e.target.dataset.id)
+async function toggleLike(e) {
+    const id = e.currentTarget.dataset.id
+    const className = e.currentTarget.className
+    const isLike = className.includes('freetrack-likecol__notliked')
+    const numLikes = parseInt(e.currentTarget.innerText)
+    const innerHTML = e.currentTarget.innerHTML
+
+    e.currentTarget.className = isLike ? className.replace('freetrack-likecol__notliked', 'freetrack-likecol__liked') : className.replace('freetrack-likecol__liked', 'freetrack-likecol__notliked')
+    e.currentTarget.innerHTML = isLike ? innerHTML.replace('far', 'fas') : innerHTML.replace('fas', 'far')
+    e.currentTarget.lastChild.data = isLike ? ` ${numLikes + 1}` : ` ${numLikes - 1}`
+
+    isLike ? await new Api().likeFreeTrack(id) : await new Api().unlikeFreeTrack(id)
 }
 
 function sortData(data) {
