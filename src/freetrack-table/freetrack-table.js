@@ -3,6 +3,11 @@ import { Table, SelectColumnFilter, TextSearchColumnFilter } from '../table/tabl
 import './freetrack-table.css'
 import Api from '../api/api'
 
+const unlikedCellStyleClasses = 'fas fa-heart';
+const likedCellStyleClasses = 'far fa-heart';
+const unlikeColStyleClasses = 'freetrack-likecol freetrack-likecol__notliked';
+const likeColStyleClasses = 'freetrack-likecol freetrack-likecol__liked';
+
 function FreeTrackTable(props) {
     const initialState = {
         filters: [{ id: 'scheduled', value: 'true' }],
@@ -57,8 +62,8 @@ function FreeTrackTable(props) {
     }
 
     function renderLikes({ row, value }) {
-        let cellStyle = row.values.liked ? 'freetrack-likecol freetrack-likecol__liked' : 'freetrack-likecol freetrack-likecol__notliked'
-        let iconStyle = row.values.liked ? 'fas fa-heart' : 'far fa-heart'
+        let cellStyle = row.values.liked ? likeColStyleClasses : unlikeColStyleClasses
+        let iconStyle = row.values.liked ? unlikedCellStyleClasses : likedCellStyleClasses
         return (
             <button className={cellStyle} data-id={row.values.id} onClick={toggleLike}><i className={iconStyle} /> {value}</button>
         )
@@ -67,12 +72,12 @@ function FreeTrackTable(props) {
     async function toggleLike(e) {
         const id = e.currentTarget.dataset.id
         const className = e.currentTarget.className
-        const isLike = className.includes('freetrack-likecol__notliked')
+        const isLike = className.includes(unlikeColStyleClasses)
         const numLikes = parseInt(e.currentTarget.innerText)
         const innerHTML = e.currentTarget.innerHTML
 
-        e.currentTarget.className = isLike ? className.replace('freetrack-likecol__notliked', 'freetrack-likecol__liked') : className.replace('freetrack-likecol__liked', 'freetrack-likecol__notliked')
-        e.currentTarget.innerHTML = isLike ? innerHTML.replace('far', 'fas') : innerHTML.replace('fas', 'far')
+        e.currentTarget.className = isLike ? className.replace(unlikeColStyleClasses, likeColStyleClasses) : className.replace(likeColStyleClasses, unlikeColStyleClasses)
+        e.currentTarget.innerHTML = isLike ? innerHTML.replace(likedCellStyleClasses, unlikedCellStyleClasses) : innerHTML.replace(unlikedCellStyleClasses, likedCellStyleClasses)
         e.currentTarget.lastChild.data = isLike ? ` ${numLikes + 1}` : ` ${numLikes - 1}`
 
         isLike ? await new Api().likeFreeTrack(id) : await new Api().unlikeFreeTrack(id)
