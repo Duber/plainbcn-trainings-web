@@ -37,7 +37,7 @@ class App extends Component {
                     <SkillTable data={this.state.skills} />
                   </Route>
                   <Route path="/freetrack">
-                    <FreeTrackTable data={this.state.freetrack} />
+                    <FreeTrackTable />
                   </Route>
                 </Switch>
               </Col>
