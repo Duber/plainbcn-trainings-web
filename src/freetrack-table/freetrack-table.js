@@ -17,7 +17,7 @@ function FreeTrackTable(props) {
     const sortedData = useMemo(() => sortData(data), [data])
 
     useEffect(() => {
-        async function getData(){
+        async function getData() {
             setData(await new Api().getFreeTrack())
         }
         getData()
@@ -61,26 +61,27 @@ function FreeTrackTable(props) {
         }
     }
 
-    function renderLikes({ row, value }) {
+    function renderLikes({ row, value, setData }) {
         let cellStyle = row.values.liked ? likeColStyleClasses : unlikeColStyleClasses
         let iconStyle = row.values.liked ? unlikedCellStyleClasses : likedCellStyleClasses
+        const onclick = async () => {
+            await toggleLike(row.index, row.values.id, setData)
+        }
         return (
-            <button className={cellStyle} data-id={row.values.id} onClick={toggleLike}><i className={iconStyle} /> {value}</button>
+            <button className={cellStyle} data-id={row.values.id} onClick={onclick}><i className={iconStyle} /> {value}</button>
         )
     }
 
-    async function toggleLike(e) {
-        const id = e.currentTarget.dataset.id
-        const className = e.currentTarget.className
-        const isLike = className.includes(unlikeColStyleClasses)
-        const numLikes = parseInt(e.currentTarget.innerText)
-        const innerHTML = e.currentTarget.innerHTML
-
-        e.currentTarget.className = isLike ? className.replace(unlikeColStyleClasses, likeColStyleClasses) : className.replace(likeColStyleClasses, unlikeColStyleClasses)
-        e.currentTarget.innerHTML = isLike ? innerHTML.replace(likedCellStyleClasses, unlikedCellStyleClasses) : innerHTML.replace(unlikedCellStyleClasses, likedCellStyleClasses)
-        e.currentTarget.lastChild.data = isLike ? ` ${numLikes + 1}` : ` ${numLikes - 1}`
-
-        isLike ? await new Api().likeFreeTrack(id) : await new Api().unlikeFreeTrack(id)
+    async function toggleLike(rowIndex, id, setData) {
+        setData(old => old.map((row, index) => {
+            if (index === rowIndex) {
+                row.liked = !row.liked
+                row.likes = row.liked ? row.likes + 1 : row.likes - 1
+            }
+            return row
+        }))
+        
+        data[rowIndex].liked ? await new Api().likeFreeTrack(id) : await new Api().unlikeFreeTrack(id)
     }
 
     const columns = [
@@ -134,7 +135,7 @@ function FreeTrackTable(props) {
 
     return (
         <div className="freetrack-table" >
-            <Table columns={columns} data={sortedData} initialState={initialState} />
+            <Table columns={columns} data={sortedData} initialState={initialState} setData={setData} />
             {data.length === 0 && <p>Loading ...</p>}
         </div>
     );
