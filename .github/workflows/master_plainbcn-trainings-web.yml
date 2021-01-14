@@ -27,3 +27,4 @@ jobs:
         slot-name: 'production'
         publish-profile: ${{ secrets.AzureAppService_PublishProfile_a141ba190cd34020b377f353bc8ca4b2 }}
         package: .
+        RemoveAdditionalFilesFlag: true
