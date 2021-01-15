@@ -28,3 +28,9 @@ jobs:
           docker build . -t ${{ secrets.ACR_NAME }}/plainbcntrainingsweb:${{ github.sha }} -t ${{ secrets.ACR_NAME }}/plainbcntrainingsweb:latest --build-arg REACT_APP_APPINSIGHTS_INSTRUMENTATIONKEY --build-arg REACT_APP_AUTH_AAD_AUTHORITY --build-arg REACT_APP_AUTH_CLIENTID --build-arg REACT_APP_AUTH_REDIRECTURL --build-arg REACT_APP_AUTH_SCOPE --build-arg REACT_APP_SKILL_API_URL --build-arg REACT_APP_FREETRACK_API_URL
           docker push ${{ secrets.ACR_NAME }}/plainbcntrainingsweb:latest
           docker push ${{ secrets.ACR_NAME }}/plainbcntrainingsweb:${{ github.sha }}
+          
+      - uses: azure/webapps-deploy@v2
+        with:
+          app-name: '${{ secrets.AZURE_WEBAPP_NAME }}'
+          publish-profile: ${{ secrets.AZURE_WEBAPP_PUBLISHPROFILE }}
+          images: '${{ secrets.ACR_NAME }}/plainbcntrainingsweb:${{ github.sha }}'
