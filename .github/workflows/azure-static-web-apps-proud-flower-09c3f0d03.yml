@@ -29,9 +29,3 @@ jobs:
           action: "upload"
           app_location: "/" # App source code path
           output_location: "build" # Built app content directory - optional
-
-      - name: Deploy to Azure Storage
-        uses: TravisSpomer/deploy-to-azure-storage@v1.3.0
-        with:
-          source-path: build
-          sas-url: ${{ secrets.STORAGE_SAS_URL }}
