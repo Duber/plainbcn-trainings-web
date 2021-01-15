@@ -26,4 +26,4 @@ jobs:
 
       - run: |
           docker build . -t ${{ secrets.ACR_NAME }}/plainbcntrainingsweb:${{ github.sha }} -t ${{ secrets.ACR_NAME }}/plainbcntrainingsweb:latest
-          docker push --all-tags ${{ secrets.ACR_NAME }}/plainbcntrainingsweb
+          docker image push --all-tags ${{ secrets.ACR_NAME }}/plainbcntrainingsweb
