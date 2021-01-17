@@ -13,4 +13,5 @@ RUN npm ci && npm run build
 FROM nginx:alpine
 RUN rm -rf /usr/share/nginx/html/*
 COPY --from=builder /app/build /usr/share/nginx/html
+RUN sed -i '/#error_page  404/ s/#error_page  404              \/404.html/error_page  404              \/index.html/' /etc/nginx/conf.d/default.conf
 ENTRYPOINT ["nginx", "-g", "daemon off;"]
