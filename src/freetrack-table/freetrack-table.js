@@ -51,14 +51,14 @@ function RenderLikes({ row, value, data, setData }) {
     let cellStyle = row.values.liked ? likeColStyleClasses : unlikeColStyleClasses
     let iconStyle = row.values.liked ? unlikedCellStyleClasses : likedCellStyleClasses
     const onclick = async () => {
-        await toggleLike(row.index, row.values.id, data, setData)
+        await toggleLike(row.index, data, setData)
     }
     return (
-        <button className={cellStyle} data-id={row.values.id} onClick={onclick}><i className={iconStyle} /> {value}</button>
+        <button className={cellStyle} onClick={onclick}><i className={iconStyle} /> {value}</button>
     )
 }
 
-async function toggleLike(rowIndex, id, data, setData) {
+async function toggleLike(rowIndex, data, setData) {
     setData(old => old.map((row, index) => {
         if (index === rowIndex) {
             row.liked = !row.liked
@@ -66,8 +66,8 @@ async function toggleLike(rowIndex, id, data, setData) {
         }
         return row
     }))
-
-    data[rowIndex].liked ? await new Api().likeFreeTrack(id) : await new Api().unlikeFreeTrack(id)
+    const rowData = data[rowIndex]
+    rowData.liked ? await new Api().likeFreeTrack(rowData.id) : await new Api().unlikeFreeTrack(rowData.id)
 }
 
 export default function FreeTrackTable() {
