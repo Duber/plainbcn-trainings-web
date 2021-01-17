@@ -8,7 +8,8 @@ import { ApplicationInsights } from '@microsoft/applicationinsights-web'
 
 const appInsights = new ApplicationInsights({
   config: {
-    instrumentationKey: process.env.REACT_APP_APPINSIGHTS_INSTRUMENTATIONKEY
+    instrumentationKey: process.env.REACT_APP_APPINSIGHTS_INSTRUMENTATIONKEY,
+    enableAutoRouteTracking: true
   }
 });
 appInsights.loadAppInsights();
