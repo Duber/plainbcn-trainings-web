@@ -3,11 +3,11 @@ import { Table, SelectColumnFilter, TextSearchColumnFilter } from '../table/tabl
 import './freetrack-table.css'
 import Api from '../api/api'
 
-const unlikedCellStyleClasses = 'fas fa-heart';
-const likedCellStyleClasses = 'far fa-heart';
-const unlikeColStyleClasses = 'freetrack-likecol freetrack-likecol__notliked';
-const likeColStyleClasses = 'freetrack-likecol freetrack-likecol__liked';
-
+const unlikedCellStyleClasses = 'fas fa-heart'
+const likedCellStyleClasses = 'far fa-heart'
+const unlikeColStyleClasses = 'freetrack-likecol freetrack-likecol__notliked'
+const likeColStyleClasses = 'freetrack-likecol freetrack-likecol__liked'
+const maxLikes = 3
 
 function sortData(data) {
     return data.sort((a, b) => {
@@ -47,14 +47,15 @@ function ScheduledColumnFilterFn(rows, id, filterValue) {
     }
 }
 
-function RenderLikes({ row, value, data, setData }) {
+function RenderLikes({ row, value, data, setData, currentLikes }) {
     let cellStyle = row.values.liked ? likeColStyleClasses : unlikeColStyleClasses
     let iconStyle = row.values.liked ? unlikedCellStyleClasses : likedCellStyleClasses
     const onclick = async () => {
         await toggleLike(row.index, data, setData)
     }
+    const disabled = row.values.liked ? false : (currentLikes >= maxLikes)
     return (
-        <button className={cellStyle} onClick={onclick}><i className={iconStyle} /> {value}</button>
+        <button className={cellStyle} onClick={onclick} disabled={disabled}><i className={iconStyle} /> {value}</button>
     )
 }
 
@@ -77,6 +78,10 @@ export default function FreeTrackTable() {
     }
     const [data, setData] = useState([]);
     const sortedData = useMemo(() => sortData(data), [data])
+    const currentLikes = useMemo(() => {
+        const today = new Date()
+        return data.filter(d => d.scheduled === null || Date.parse(d.scheduled) >= today).reduce((numLikes, d) => numLikes + (d.liked ? 1 : 0), 0)
+    }, [data])
 
     useEffect(() => {
         async function getData() {
@@ -137,7 +142,7 @@ export default function FreeTrackTable() {
 
     return (
         <div className="freetrack-table" >
-            <Table columns={columns} data={sortedData} initialState={initialState} setData={setData} />
+            <Table columns={columns} data={sortedData} initialState={initialState} setData={setData} currentLikes={currentLikes} />
             {data.length === 0 && <p>Loading ...</p>}
         </div>
     );

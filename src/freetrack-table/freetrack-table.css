@@ -12,6 +12,6 @@ option {
 }
 
 .freetrack-likecol__liked,
-.freetrack-likecol:hover {
+.freetrack-likecol:enabled:hover {
   color: red;
 }
