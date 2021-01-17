@@ -8,7 +8,7 @@ ARG REACT_APP_SKILL_API_URL
 ARG REACT_APP_FREETRACK_API_URL
 WORKDIR /app
 COPY . .
-RUN npm install && npm run build
+RUN npm ci && npm run build
 
 FROM nginx:alpine
 RUN rm -rf /usr/share/nginx/html/*
