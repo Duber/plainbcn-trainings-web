@@ -1,3 +1,15 @@
+body {
+ background-color: #f8f9fa;
+}
+
+.freetrack-new {
+  margin-bottom: 5px;
+}
+
+.freetrack-table th {
+  background-color: white;
+}
+
 .freetrack-table th select,
 input,
 option {
