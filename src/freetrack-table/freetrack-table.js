@@ -5,6 +5,7 @@ import Api from '../api/api'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
+import Button from 'react-bootstrap/Button'
 
 const unlikedCellStyleClasses = 'fas fa-heart'
 const likedCellStyleClasses = 'far fa-heart'
@@ -145,6 +146,11 @@ export default function FreeTrackTable() {
 
     return (
         <Container fluid>
+            <Row>
+                <Col>
+                    <Button variant="outline-primary" href={process.env.REACT_APP_FREETRACK_FORM} target="_blank">New proposal</Button>
+                </Col>
+            </Row>
             <Row>
                 <Col>
                     <div className="freetrack-table" >
