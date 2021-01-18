@@ -2,6 +2,9 @@ import { useState, useMemo, useEffect } from 'react'
 import { Table, SelectColumnFilter, TextSearchColumnFilter } from '../table/table';
 import './freetrack-table.css'
 import Api from '../api/api'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 const unlikedCellStyleClasses = 'fas fa-heart'
 const likedCellStyleClasses = 'far fa-heart'
@@ -141,9 +144,15 @@ export default function FreeTrackTable() {
     ], [])
 
     return (
-        <div className="freetrack-table" >
-            <Table columns={columns} data={sortedData} initialState={initialState} setData={setData} currentLikes={currentLikes} />
-            {data.length === 0 && <p>Loading ...</p>}
-        </div>
+        <Container fluid>
+            <Row>
+                <Col>
+                    <div className="freetrack-table" >
+                        <Table columns={columns} data={sortedData} initialState={initialState} setData={setData} currentLikes={currentLikes} />
+                        {data.length === 0 && <p>Loading ...</p>}
+                    </div>
+                </Col>
+            </Row>
+        </Container>
     );
 }

@@ -15,23 +15,11 @@ export default function App() {
       <Switch>
         <Route exact path="/">
           <Navbar />
-          <Container fluid>
-            <Row>
-              <Col>
-                <SkillTable />
-              </Col>
-            </Row>
-          </Container>
+          <SkillTable />
         </Route>
         <Route path="/freetrack">
           <Navbar />
-          <Container fluid>
-            <Row>
-              <Col>
-                <FreeTrackTable />
-              </Col>
-            </Row>
-          </Container>
+          <FreeTrackTable />
         </Route>
         <Route>
           <NotFound />

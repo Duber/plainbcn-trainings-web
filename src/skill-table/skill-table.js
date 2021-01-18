@@ -2,6 +2,9 @@ import { useState, useMemo, useEffect } from 'react'
 import { Table, SelectColumnFilter, TextSearchColumnFilter } from '../table/table';
 import './skill-table.css'
 import Api from '../api/api'
+import Container from 'react-bootstrap/Container'
+import Row from 'react-bootstrap/Row'
+import Col from 'react-bootstrap/Col'
 
 function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -47,12 +50,18 @@ export default function SkillTable() {
             Filter: SelectColumnFilter,
             width: "10vmax"
         },
-    ],[])
+    ], [])
 
     return (
-        <div className="skillTable" >
-            <Table columns={columns} data={sortedData} />
-            {data.length === 0 && <p>Loading ...</p>}
-        </div>
+        <Container fluid>
+            <Row>
+                <Col>
+                    <div className="skillTable" >
+                        <Table columns={columns} data={sortedData} />
+                        {data.length === 0 && <p>Loading ...</p>}
+                    </div>
+                </Col>
+            </Row>
+        </Container>
     );
 }
