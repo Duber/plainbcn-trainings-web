@@ -148,7 +148,7 @@ export default function FreeTrackTable() {
         <Container fluid>
             <Row>
                 <Col>
-                    <Button variant="outline-primary" href={process.env.REACT_APP_FREETRACK_FORM} target="_blank">New proposal</Button>
+                    <Button variant="outline-secondary" href={process.env.REACT_APP_FREETRACK_FORM} target="_blank">New proposal</Button>
                 </Col>
             </Row>
             <Row>
