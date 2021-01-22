@@ -60,8 +60,9 @@ export function Table(options) {
         headerGroups,
         rows,
         prepareRow,
+        onClickRow = () => {}
     } = useTable(options, useFilters)
-
+    
     // Render the UI for your table
     return (
         <BTable responsive striped bordered hover size="sm" {...getTableProps()}>
@@ -89,7 +90,7 @@ export function Table(options) {
                 {rows.map((row, i) => {
                     prepareRow(row)
                     return (
-                        <tr {...row.getRowProps()}>
+                        <tr {...row.getRowProps()} onClick={() => onClickRow(row)}>
                             {row.cells.map(cell => {
                                 return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                             })}

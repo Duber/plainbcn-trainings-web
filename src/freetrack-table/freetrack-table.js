@@ -6,6 +6,8 @@ import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
 import Button from 'react-bootstrap/Button'
+import Modal from 'react-bootstrap/Modal'
+import { Fragment } from 'react';
 
 const unlikedCellStyleClasses = 'fas fa-heart'
 const likedCellStyleClasses = 'far fa-heart'
@@ -76,12 +78,20 @@ async function toggleLike(rowIndex, data, setData) {
 }
 
 export default function FreeTrackTable() {
+    const [data, setData] = useState([])
+    const [modalVisibility, setModalVisibility] = useState(false)
+    const [modalData, setModalData] = useState({})
+
     const initialState = {
         filters: [{ id: 'scheduled', value: 'true' }],
-        hiddenColumns: ['liked', 'id']
+        hiddenColumns: ['liked', 'id', 'owner', 'notes']
     }
-    const [data, setData] = useState([]);
+
+    const closeModal = () => setModalVisibility(false);
+    const showModal = () => setModalVisibility(true);
+
     const sortedData = useMemo(() => sortData(data), [data])
+
     const currentLikes = useMemo(() => {
         const today = new Date()
         return data.filter(d => d.scheduled === null || Date.parse(d.scheduled) >= today).reduce((numLikes, d) => numLikes + (d.liked ? 1 : 0), 0)
@@ -93,7 +103,6 @@ export default function FreeTrackTable() {
         }
         getData()
     }, [])
-
 
     const columns = useMemo(() => [
         {
@@ -141,24 +150,63 @@ export default function FreeTrackTable() {
         {
             id: 'id',
             accessor: 'id'
+        },
+        {
+            id: 'owner',
+            accessor: 'owner'
+        },
+        {
+            id: 'notes',
+            accessor: 'notes'
         }
     ], [])
 
+    function onclickRow(row) {
+        setModalData(row.values)
+        showModal()
+    }
+
     return (
-        <Container fluid>
-            <Row>
-                <Col>
-                    <Button className="freetrack-new" variant="outline-secondary" href={process.env.REACT_APP_FREETRACK_FORM} target="_blank">New proposal</Button>
-                </Col>
-            </Row>
-            <Row>
-                <Col>
-                    <div className="freetrack-table" >
-                        <Table columns={columns} data={sortedData} initialState={initialState} setData={setData} currentLikes={currentLikes} />
-                        {data.length === 0 && <p>Loading ...</p>}
-                    </div>
-                </Col>
-            </Row>
-        </Container>
+        <Fragment>
+            <Modal show={modalVisibility} onHide={closeModal} centered>
+                <Modal.Header closeButton>
+                    <Modal.Title>Free Track</Modal.Title>
+                </Modal.Header>
+                <Modal.Body className="show-grid">
+                    <Container>
+                        <Row>
+                            <Col xs="2">Title:</Col><Col xs="auto">{modalData.title}</Col>
+                        </Row>
+                        <Row>
+                            <Col xs="2">Area:</Col><Col xs="auto">{modalData.area}</Col>
+                        </Row>
+                        <Row>
+                            <Col xs="2">Level:</Col><Col xs="auto">{modalData.level}</Col>
+                        </Row>
+                        <Row>
+                            <Col xs="2">Owner:</Col><Col xs="auto">{modalData.owner}</Col>
+                        </Row>
+                        <Row>
+                            <Col xs="auto">Notes:</Col><Col xs="auto">{modalData.notes}</Col>
+                        </Row>
+                    </Container>
+                </Modal.Body>
+            </Modal>
+            <Container fluid>
+                <Row>
+                    <Col>
+                        <Button className="freetrack-new" variant="outline-secondary" href={process.env.REACT_APP_FREETRACK_FORM} target="_blank">New proposal</Button>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <div className="freetrack-table" >
+                            <Table columns={columns} data={sortedData} initialState={initialState} setData={setData} currentLikes={currentLikes} onClickRow={onclickRow} />
+                            {data.length === 0 && <p>Loading ...</p>}
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
+        </Fragment>
     );
 }
