@@ -5,9 +5,9 @@ import Api from '../api/api'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
 import Col from 'react-bootstrap/Col'
-import Button from 'react-bootstrap/Button'
 import Modal from 'react-bootstrap/Modal'
 import { Fragment } from 'react';
+import FreeTrackNew from './freetrack-new'
 
 const unlikedCellStyleClasses = 'fas fa-heart'
 const likedCellStyleClasses = 'far fa-heart'
@@ -195,7 +195,7 @@ export default function FreeTrackPage() {
             <Container fluid>
                 <Row>
                     <Col>
-                        <Button className="freetrack-new" variant="outline-secondary" href={process.env.REACT_APP_FREETRACK_FORM} target="_blank">New proposal</Button>
+                        <FreeTrackNew />
                     </Col>
                 </Row>
                 <Row>
