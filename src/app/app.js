@@ -1,7 +1,7 @@
 import './app.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
-import SkillTable from '../skill-table/skill-table'
-import FreeTrackTable from '../freetrack-table/freetrack-table'
+import SkillPage from '../skill/skill-page'
+import FreeTrackPage from '../freetrack/freetrack-page'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Navbar from '../navbar/navbar'
 import NotFound from '../not-found/not-found'
@@ -12,11 +12,11 @@ export default function App() {
       <Switch>
         <Route exact path="/">
           <Navbar />
-          <SkillTable />
+          <SkillPage />
         </Route>
         <Route path="/freetrack">
           <Navbar />
-          <FreeTrackTable />
+          <FreeTrackPage />
         </Route>
         <Route>
           <NotFound />

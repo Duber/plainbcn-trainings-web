@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect } from 'react'
 import { Table, SelectColumnFilter, TextSearchColumnFilter } from '../table/table';
-import './freetrack-table.css'
+import './freetrack-page.css'
 import Api from '../api/api'
 import Container from 'react-bootstrap/Container'
 import Row from 'react-bootstrap/Row'
@@ -77,7 +77,7 @@ async function toggleLike(rowIndex, data, setData) {
     rowData.liked ? await new Api().likeFreeTrack(rowData.id) : await new Api().unlikeFreeTrack(rowData.id)
 }
 
-export default function FreeTrackTable() {
+export default function FreeTrackPage() {
     const [data, setData] = useState([])
     const [modalVisibility, setModalVisibility] = useState(false)
     const [modalData, setModalData] = useState({})
