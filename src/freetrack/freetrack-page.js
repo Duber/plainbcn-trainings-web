@@ -2,12 +2,9 @@ import { useState, useMemo, useEffect } from 'react'
 import { Table, SelectColumnFilter, TextSearchColumnFilter } from '../table/table';
 import './freetrack-page.css'
 import Api from '../api/api'
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
-import Modal from 'react-bootstrap/Modal'
 import { Fragment } from 'react';
 import FreeTrackNew from './freetrack-new'
+import $ from 'jquery'
 
 const unlikedCellStyleClasses = 'fas fa-heart'
 const likedCellStyleClasses = 'far fa-heart'
@@ -79,16 +76,12 @@ async function toggleLike(rowIndex, data, setData) {
 
 export default function FreeTrackPage() {
     const [data, setData] = useState([])
-    const [modalVisibility, setModalVisibility] = useState(false)
     const [modalData, setModalData] = useState({})
 
     const initialState = {
         filters: [{ id: 'scheduled', value: 'true' }],
         hiddenColumns: ['liked', 'id', 'owner', 'notes']
     }
-
-    const closeModal = () => setModalVisibility(false);
-    const showModal = () => setModalVisibility(true);
 
     const sortedData = useMemo(() => sortData(data), [data])
 
@@ -163,50 +156,65 @@ export default function FreeTrackPage() {
 
     function onclickRow(row) {
         setModalData(row.values)
-        showModal()
+        $('#freetrack-modal').modal('show')
     }
 
     return (
         <Fragment>
-            <Modal show={modalVisibility} onHide={closeModal} centered>
-                <Modal.Header closeButton>
-                    <Modal.Title>Free Track</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className="show-grid">
-                    <Container>
-                        <Row>
-                            <Col xs="2">Title:</Col><Col xs="auto">{modalData.title}</Col>
-                        </Row>
-                        <Row>
-                            <Col xs="2">Area:</Col><Col xs="auto">{modalData.area}</Col>
-                        </Row>
-                        <Row>
-                            <Col xs="2">Level:</Col><Col xs="auto">{modalData.level}</Col>
-                        </Row>
-                        <Row>
-                            <Col xs="2">Owner:</Col><Col xs="auto">{modalData.owner}</Col>
-                        </Row>
-                        <Row>
-                            <Col xs="auto">Notes:</Col><Col xs="auto">{modalData.notes}</Col>
-                        </Row>
-                    </Container>
-                </Modal.Body>
-            </Modal>
-            <Container fluid>
-                <Row>
-                    <Col>
+            <div className="modal" tabindex="-1" id="freetrack-modal">
+                <div className="modal-dialog modal-dialog-centered">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h4 className="modal-title">Free Track</h4>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div className="modal-body">
+                            <div className="container-fluid">
+                                <div className="row">
+                                    <div className="col-2">Title:</div>
+                                    <div className="col-auto">{modalData.title}</div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-2">Area:</div>
+                                    <div className="col-auto">{modalData.area}</div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-2">Level:</div>
+                                    <div className="col-auto">{modalData.level}</div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-2">Owner:</div>
+                                    <div className="col-auto">{modalData.owner}</div>
+                                </div>
+                                <div className="row">
+                                    <div className="col-2">Notes:</div>
+                                    <div className="col">{modalData.notes}</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="modal-footer">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div className="container-fluid">
+                <div className="row">
+                    <div className="col">
                         <FreeTrackNew />
-                    </Col>
-                </Row>
-                <Row>
-                    <Col>
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col">
                         <div className="freetrack-table" >
                             <Table columns={columns} data={sortedData} initialState={initialState} setData={setData} currentLikes={currentLikes} onClickRow={onclickRow} />
                             {data.length === 0 && <p>Loading ...</p>}
                         </div>
-                    </Col>
-                </Row>
-            </Container>
+                    </div>
+                </div>
+            </div>
         </Fragment>
     );
 }

@@ -1,5 +1,7 @@
 import './app.css'
 import 'bootstrap/dist/css/bootstrap.min.css';
+import 'jquery'
+import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import SkillPage from '../skill/skill-page'
 import FreeTrackPage from '../freetrack/freetrack-page'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
