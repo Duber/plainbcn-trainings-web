@@ -1,6 +1,5 @@
 import React from 'react'
 import { useTable, useFilters } from 'react-table'
-import BTable from 'react-bootstrap/Table';
 
 // This is a custom filter UI for selecting
 // a unique option from a list
@@ -65,7 +64,7 @@ export function Table(options) {
     
     // Render the UI for your table
     return (
-        <BTable responsive striped bordered hover size="sm" {...getTableProps()}>
+        <table className="table table-sm table-striped table-bordered table-hover" {...getTableProps()}>
             <thead>
                 {headerGroups.map(headerGroup => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
@@ -98,6 +97,6 @@ export function Table(options) {
                     )
                 })}
             </tbody>
-        </BTable>
+        </table>
     )
 }
