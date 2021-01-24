@@ -1,0 +1,10 @@
+.skillTable th {
+    background-color: white;
+}
+
+.skillTable th select,
+input,
+option {
+    height: 1.5em;
+    min-width: 100%;
+}
