@@ -1,4 +1,4 @@
-import { useState, useMemo, useEffect, useCallback } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import { Table, SelectColumnFilter, TextSearchColumnFilter } from '../table/table';
 import './freetrack-page.css'
 import Api from '../api/api'
@@ -51,6 +51,47 @@ function ScheduledColumnFilterFn(rows, id, filterValue) {
     }
 }
 
+function RenderLikes({ row, value, data, setData, currentLikes }) {
+    const cellStyle = row.values.liked ? likeColStyleClasses : unlikeColStyleClasses
+    const iconStyle = row.values.liked ? unlikedCellStyleClasses : likedCellStyleClasses
+    const onclick = async () => {
+        await toggleLike(row.index, data, setData)
+    }
+    const disabled = row.values.liked ? false : (currentLikes >= maxLikes)
+    return (
+        <button className={cellStyle} onClick={onclick} disabled={disabled}><i className={iconStyle} /> {value}</button>
+    )
+}
+
+async function toggleLike(rowIndex, data, setData) {
+    const row = data[rowIndex]
+    row.liked = !row.liked
+    row.likes = row.liked ? row.likes + 1 : row.likes - 1
+
+    setData(old => old.map((r, index) => {
+        if (index === rowIndex) {
+            return row
+        }
+        return r
+    }))
+    row.liked ? await new Api().likeFreeTrack(row.id) : await new Api().unlikeFreeTrack(row.id)
+}
+
+function RenderTitle({ row, value, setModalData }) {
+    const onclick = () => {
+        showModal(row.values, setModalData)
+    }
+
+    return (
+        <Link to={`/freetrack/${row.values.id}`} onClick={onclick}>{value}</Link>
+    )
+}
+
+function showModal(row, setModalData) {
+    setModalData(row)
+    $('#freetrack-modal').modal('show')
+}
+
 export default function FreeTrackPage() {
     const [data, setData] = useState([])
     const [modalData, setModalData] = useState({})
@@ -69,72 +110,17 @@ export default function FreeTrackPage() {
         return data.filter(d => d.scheduled === null || Date.parse(d.scheduled) >= today).reduce((numLikes, d) => numLikes + (d.liked ? 1 : 0), 0)
     }, [data])
 
-    const showModal = useCallback((row) => {
-        setModalData(row)
-        $('#freetrack-modal').modal('show')
-    }, [])
-
     useEffect(() => {
         async function getData() {
             const newData = await new Api().getFreeTrack()
             setData(newData)
             if (id) {
                 const [row] = newData.filter(d => d.id === id)
-                showModal(row)
+                showModal(row, setModalData)
             }
         }
         getData()
     }, [])
-
-    const toggleLike = useCallback(async (id) => {
-        const row = data.find(d => d.id === id)
-        row.liked = !row.liked
-        row.likes = row.liked ? row.likes + 1 : row.likes - 1
-        const request = row.liked ? new Api().likeFreeTrack(row.id) : new Api().unlikeFreeTrack(row.id)
-        
-        setData(old => old.map((r) => {
-            if (r.id === id) {
-                return row
-            }
-            return r
-        }))
-
-        await request
-    }, [data])
-
-    const RenderLikes = useCallback(({ row, value }) => {
-        const cellStyle = row.values.liked ? likeColStyleClasses : unlikeColStyleClasses
-        const iconStyle = row.values.liked ? unlikedCellStyleClasses : likedCellStyleClasses
-        const onclick = async () => {
-            await toggleLike(row.values.id)
-        }
-        const disabled = row.values.liked ? false : (currentLikes >= maxLikes)
-        return (
-            <button className={cellStyle} onClick={onclick} disabled={disabled}><i className={iconStyle} /> {value}</button>
-        )
-    }, [toggleLike, currentLikes])
-
-    // async function toggleLike(rowIndex, data, setData) {
-    //     setData(old => old.map((row, index) => {
-    //         if (index === rowIndex) {
-    //             row.liked = !row.liked
-    //             row.likes = row.liked ? row.likes + 1 : row.likes - 1
-    //         }
-    //         return row
-    //     }))
-    //     const rowData = data[rowIndex]
-    //     rowData.liked ? await new Api().likeFreeTrack(rowData.id) : await new Api().unlikeFreeTrack(rowData.id)
-    // }
-
-    const RenderTitle = useCallback(({ row, value }) => {
-        const onclick = () => {
-            showModal(row.values)
-        }
-
-        return (
-            <Link to={`/freetrack/${row.values.id}`} onClick={onclick}>{value}</Link>
-        )
-    }, [showModal])
 
     const columns = useMemo(() =>
         [
@@ -193,7 +179,7 @@ export default function FreeTrackPage() {
                 id: 'notes',
                 accessor: 'notes'
             }
-        ], [RenderTitle, RenderLikes])
+        ], [])
 
     function onCloseModal() {
         history.push('/freetrack')
@@ -246,7 +232,7 @@ export default function FreeTrackPage() {
                 <div className="row">
                     <div className="col">
                         <div className="freetrack-table" >
-                            <Table columns={columns} data={sortedData} initialState={initialState} setData={setData} currentLikes={currentLikes} />
+                            <Table columns={columns} data={sortedData} initialState={initialState} setData={setData} setModalData={setModalData} currentLikes={currentLikes} />
                             {data.length === 0 && <p>Loading ...</p>}
                         </div>
                     </div>
