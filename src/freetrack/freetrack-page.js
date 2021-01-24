@@ -97,6 +97,15 @@ export default function FreeTrackPage() {
         getData()
     }, [])
 
+    function RenderTitle({ row, value }) {
+        const onclick = () => {
+            onclickRow(row)
+        }
+        return (
+            <a href="#" onClick={onclick}>{value}</a>
+        )
+    }
+
     const columns = useMemo(() => [
         {
             Header: 'Type',
@@ -120,6 +129,7 @@ export default function FreeTrackPage() {
             Header: 'Title',
             accessor: 'title',
             Filter: TextSearchColumnFilter,
+            Cell: RenderTitle,
             width: '40vmax'
         },
         {
@@ -209,7 +219,7 @@ export default function FreeTrackPage() {
                 <div className="row">
                     <div className="col">
                         <div className="freetrack-table" >
-                            <Table columns={columns} data={sortedData} initialState={initialState} setData={setData} currentLikes={currentLikes} onClickRow={onclickRow} />
+                            <Table columns={columns} data={sortedData} initialState={initialState} setData={setData} currentLikes={currentLikes} />
                             {data.length === 0 && <p>Loading ...</p>}
                         </div>
                     </div>

@@ -58,13 +58,12 @@ export function Table(options) {
         getTableBodyProps,
         headerGroups,
         rows,
-        prepareRow,
-        onClickRow = () => {}
+        prepareRow
     } = useTable(options, useFilters)
     
     // Render the UI for your table
     return (
-        <table className="table table-sm table-striped table-bordered table-hover" {...getTableProps()}>
+        <table className="table table-responsive-sm table-striped table-bordered table-hover" {...getTableProps()}>
             <thead>
                 {headerGroups.map(headerGroup => (
                     <tr {...headerGroup.getHeaderGroupProps()}>
@@ -89,7 +88,7 @@ export function Table(options) {
                 {rows.map((row, i) => {
                     prepareRow(row)
                     return (
-                        <tr {...row.getRowProps()} onClick={() => onClickRow(row)}>
+                        <tr {...row.getRowProps()}>
                             {row.cells.map(cell => {
                                 return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
                             })}
