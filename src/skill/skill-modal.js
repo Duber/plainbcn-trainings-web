@@ -1,6 +1,7 @@
 import $ from 'jquery'
 import { useHistory } from 'react-router-dom'
 import { useEffect } from 'react'
+import './skill-modal.css'
 
 export default function SkillModal(props) {
     const { id, data, show, setShow} = props
