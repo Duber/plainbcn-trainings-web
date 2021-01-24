@@ -1,7 +1,6 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, Fragment } from 'react'
 import './freetrack-page.css'
 import Api from '../api/api'
-import { Fragment } from 'react';
 import FreeTrackNew from './freetrack-new'
 import { useParams } from 'react-router-dom'
 import FreeTrackModal from './freetrack-modal'
@@ -17,16 +16,22 @@ export default function FreeTrackPage() {
 
     useEffect(() => {
         async function getData() {
+            console.log("initial load")
             const newData = await new Api().getFreeTrack()
             setData(newData)
-            if (id) {
-                const [row] = newData.filter(d => d.id === id)
+        }
+        getData()
+    }, [])
+
+    useEffect(() => {
+        if (id) {
+            const [row] = data.filter(d => d.id === id)
+            if (row) {
                 setModalData(row)
                 setShowModal(true)
             }
         }
-        getData()
-    }, [id])
+    }, [data, id])
 
     return (
         <Fragment>

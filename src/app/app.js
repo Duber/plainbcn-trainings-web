@@ -4,7 +4,7 @@ import 'jquery'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import SkillPage from '../skill/skill-page'
 import FreeTrackPage from '../freetrack/freetrack-page'
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import Navbar from '../navbar/navbar'
 import NotFound from '../not-found/not-found'
 
@@ -13,6 +13,9 @@ export default function App() {
     <Router>
       <Switch>
         <Route exact path="/">
+          <Redirect to="/skill"/>
+        </Route>
+        <Route path="/skill/:id?">
           <Navbar />
           <SkillPage />
         </Route>

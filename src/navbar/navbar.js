@@ -19,7 +19,7 @@ export default class Navbar extends Component {
                 </button>
                 <div className="collapse navbar-collapse" id="navbarContent">
                     <ul className="navbar-nav mr-auto">
-                        <NavbarLink label="Skills" to="/" exact="true" />
+                        <NavbarLink label="Skills" to="/skill" />
                         <NavbarLink label="Free Track" to="/freetrack"/>
                     </ul>
                     <ul className="navbar-nav justify-content-end">
