@@ -3,14 +3,21 @@ import { useHistory } from 'react-router-dom'
 import { useEffect } from 'react'
 
 export default function FreeTrackModal(props) {
-    const { id, data } = props
+    const { id, data, show, setShow } = props
     const history = useHistory()
 
     useEffect(() => {
         $(`#${id}`).on('hidden.bs.modal', function (event) {
+            setShow(false)
             history.push('/freetrack')
         })
-    }, [id, history])
+    }, [id, history, setShow])
+
+    useEffect(() => {
+        if (show) {
+            $(`#${id}`).modal('show')
+        }
+    }, [show, id])
 
     return (
         <div className="modal" tabIndex="-1" id={id}>

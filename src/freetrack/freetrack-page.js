@@ -32,9 +32,14 @@ export default function FreeTrackPage() {
         }
     }, [data, id])
 
+    function onclick(row) {
+        setModalData(row)
+        setShowModal(true)
+    }
+
     return (
         <Fragment>
-            <FreeTrackModal id={modalId} data={modalData} />
+            <FreeTrackModal id={modalId} data={modalData} show={showModal} setShow={setShowModal} />
             <div className="container-fluid">
                 <div className="row">
                     <div className="col">
@@ -43,7 +48,7 @@ export default function FreeTrackPage() {
                 </div>
                 <div className="row">
                     <div className="col">
-                        <FreeTrackTable data={sortedData} setData={setData} modalId={modalId} setModalData={setModalData} showModal={showModal} />
+                        <FreeTrackTable data={sortedData} setData={setData} onclick={onclick} />
                     </div>
                 </div>
             </div>

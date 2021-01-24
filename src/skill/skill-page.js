@@ -37,7 +37,7 @@ export default function SkillPage() {
 
     return (
         <Fragment>
-            <SkillModal id={modalId} data={modalData} showModal={showModal} setShowModal={setShowModal} />
+            <SkillModal id={modalId} data={modalData} show={showModal} setShow={setShowModal} />
             <div className="container-fluid">
                 <div className="row">
                     <div className="col">

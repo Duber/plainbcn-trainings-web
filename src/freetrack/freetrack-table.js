@@ -1,5 +1,4 @@
-import $ from 'jquery'
-import { useMemo, useEffect } from 'react'
+import { useMemo } from 'react'
 import { Table, SelectColumnFilter, TextSearchColumnFilter } from '../table/table';
 import { Link } from 'react-router-dom'
 import Api from '../api/api'
@@ -12,13 +11,7 @@ const likeColStyleClasses = 'freetrack-likecol freetrack-likecol__liked'
 const maxLikes = 3
 
 export default function FreeTrackTable(props) {
-    const { data, setData, modalId, setModalData, showModal } = props
-
-    useEffect(() => {
-        if (showModal) {
-            $(`#${modalId}`).modal('show')
-        }
-    }, [showModal, modalId])
+    const { data, setData } = props
 
     const initialState = {
         filters: [{ id: 'scheduled', value: 'true' }],
@@ -90,7 +83,7 @@ export default function FreeTrackTable(props) {
 
     return (
         <div className="freetrack-table" >
-            <Table columns={columns} data={data} initialState={initialState} setData={setData} modalId={modalId} setModalData={setModalData} currentLikes={currentLikes} />
+            <Table columns={columns} data={data} initialState={initialState} setData={setData} currentLikes={currentLikes} />
             {data.length === 0 && <p>Loading ...</p>}
         </div>
     )
@@ -148,12 +141,11 @@ async function toggleLike(rowIndex, data, setData) {
     row.liked ? await new Api().likeFreeTrack(row.id) : await new Api().unlikeFreeTrack(row.id)
 }
 
-function RenderTitle({ modalId, row, value, setModalData }) {
-    const onclick = () => {
-        setModalData(row.values)
-        $(`#${modalId}`).modal('show')
+function RenderTitle({ row, value, onclick }) {
+    const click = () => {
+        onclick(row)
     }
     return (
-        <Link to={`/freetrack/${row.values.id}`} onClick={onclick}>{value}</Link>
+        <Link to={`/freetrack/${row.values.id}`} onClick={click}>{value}</Link>
     )
 }
