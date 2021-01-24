@@ -51,30 +51,6 @@ function ScheduledColumnFilterFn(rows, id, filterValue) {
     }
 }
 
-function RenderLikes({ row, value, data, setData, currentLikes }) {
-    const cellStyle = row.values.liked ? likeColStyleClasses : unlikeColStyleClasses
-    const iconStyle = row.values.liked ? unlikedCellStyleClasses : likedCellStyleClasses
-    const onclick = async () => {
-        await toggleLike(row.index, data, setData)
-    }
-    const disabled = row.values.liked ? false : (currentLikes >= maxLikes)
-    return (
-        <button className={cellStyle} onClick={onclick} disabled={disabled}><i className={iconStyle} /> {value}</button>
-    )
-}
-
-async function toggleLike(rowIndex, data, setData) {
-    setData(old => old.map((row, index) => {
-        if (index === rowIndex) {
-            row.liked = !row.liked
-            row.likes = row.liked ? row.likes + 1 : row.likes - 1
-        }
-        return row
-    }))
-    const rowData = data[rowIndex]
-    rowData.liked ? await new Api().likeFreeTrack(rowData.id) : await new Api().unlikeFreeTrack(rowData.id)
-}
-
 export default function FreeTrackPage() {
     const [data, setData] = useState([])
     const [modalData, setModalData] = useState({})
@@ -109,6 +85,46 @@ export default function FreeTrackPage() {
         }
         getData()
     }, [])
+
+    const toggleLike = useCallback(async (id) => {
+        const row = data.find(d => d.id === id)
+        row.liked = !row.liked
+        row.likes = row.liked ? row.likes + 1 : row.likes - 1
+        const request = row.liked ? new Api().likeFreeTrack(row.id) : new Api().unlikeFreeTrack(row.id)
+        
+        setData(old => old.map((r) => {
+            if (r.id === id) {
+                return row
+            }
+            return r
+        }))
+
+        await request
+    }, [data])
+
+    const RenderLikes = useCallback(({ row, value }) => {
+        const cellStyle = row.values.liked ? likeColStyleClasses : unlikeColStyleClasses
+        const iconStyle = row.values.liked ? unlikedCellStyleClasses : likedCellStyleClasses
+        const onclick = async () => {
+            await toggleLike(row.values.id)
+        }
+        const disabled = row.values.liked ? false : (currentLikes >= maxLikes)
+        return (
+            <button className={cellStyle} onClick={onclick} disabled={disabled}><i className={iconStyle} /> {value}</button>
+        )
+    }, [toggleLike, currentLikes])
+
+    // async function toggleLike(rowIndex, data, setData) {
+    //     setData(old => old.map((row, index) => {
+    //         if (index === rowIndex) {
+    //             row.liked = !row.liked
+    //             row.likes = row.liked ? row.likes + 1 : row.likes - 1
+    //         }
+    //         return row
+    //     }))
+    //     const rowData = data[rowIndex]
+    //     rowData.liked ? await new Api().likeFreeTrack(rowData.id) : await new Api().unlikeFreeTrack(rowData.id)
+    // }
 
     const RenderTitle = useCallback(({ row, value }) => {
         const onclick = () => {
@@ -177,7 +193,7 @@ export default function FreeTrackPage() {
                 id: 'notes',
                 accessor: 'notes'
             }
-        ], [RenderTitle])
+        ], [RenderTitle, RenderLikes])
 
     function onCloseModal() {
         history.push('/freetrack')
