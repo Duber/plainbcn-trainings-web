@@ -3,6 +3,7 @@ import { useMemo, useEffect } from 'react'
 import { Table, SelectColumnFilter, TextSearchColumnFilter } from '../table/table';
 import { Link } from 'react-router-dom'
 import Api from '../api/api'
+import './freetrack-table.css'
 
 const unlikedCellStyleClasses = 'fas fa-heart'
 const likedCellStyleClasses = 'far fa-heart'
