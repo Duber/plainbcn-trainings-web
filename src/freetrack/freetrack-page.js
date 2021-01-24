@@ -102,7 +102,7 @@ export default function FreeTrackPage() {
             onclickRow(row)
         }
         return (
-            <a href="#" onClick={onclick}>{value}</a>
+            <a href="# " onClick={onclick}>{value}</a>
         )
     }
 
