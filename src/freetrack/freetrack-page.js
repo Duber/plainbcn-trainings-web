@@ -16,7 +16,6 @@ export default function FreeTrackPage() {
 
     useEffect(() => {
         async function getData() {
-            console.log("initial load")
             const newData = await new Api().getFreeTrack()
             setData(newData)
         }

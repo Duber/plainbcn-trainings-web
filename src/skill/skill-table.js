@@ -1,11 +1,10 @@
-import $ from 'jquery'
 import { useMemo } from 'react'
 import { Table, SelectColumnFilter, TextSearchColumnFilter } from '../table/table';
 import { Link } from 'react-router-dom'
 import './skill-table.css'
 
 export default function SkillTable(props) {
-    const { data, modalId, setModalData } = props
+    const { data, onclick } = props
 
     const initialState = {
         hiddenColumns: ['id', 'scope']
@@ -49,7 +48,7 @@ export default function SkillTable(props) {
 
     return (
         <div className="skillTable" >
-            <Table columns={columns} data={data} initialState={initialState} setModalData={setModalData} modalId={modalId} />
+            <Table columns={columns} data={data} initialState={initialState} onclick={onclick} />
             {data.length === 0 && <p>Loading ...</p>}
         </div>
     )
@@ -59,12 +58,12 @@ function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function RenderTitle({ modalId, row, value, setModalData }) {
-    const onclick = () => {
-        setModalData(row.values)
-        $(`#${modalId}`).modal('show')
+function RenderTitle({ row, value, onclick }) {
+    const click = () => {
+        onclick(row.values)
     }
+
     return (
-        <Link to={`/skill/${row.values.id}`} onClick={onclick}>{value}</Link>
+        <Link to={`/skill/${row.values.id}`} onClick={click}>{value}</Link>
     )
 }

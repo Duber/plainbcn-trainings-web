@@ -3,14 +3,15 @@ import { useHistory } from 'react-router-dom'
 import { useEffect } from 'react'
 
 export default function SkillModal(props) {
-    const { id, data, showModal } = props
+    const { id, data, showModal, setShowModal } = props
     const history = useHistory()
 
     useEffect(() => {
         $(`#${id}`).on('hidden.bs.modal', function (event) {
+            setShowModal(false)
             history.push('/skill')
         })
-    }, [id, history])
+    }, [id, history, setShowModal])
 
     useEffect(() => {
         if (showModal) {
