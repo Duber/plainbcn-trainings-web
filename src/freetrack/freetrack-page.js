@@ -161,12 +161,12 @@ export default function FreeTrackPage() {
 
     return (
         <Fragment>
-            <div className="modal" tabindex="-1" id="freetrack-modal">
+            <div className="modal" tabIndex="-1" id="freetrack-modal">
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                         <div className="modal-header">
                             <h4 className="modal-title">Free Track</h4>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>

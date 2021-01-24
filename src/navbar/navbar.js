@@ -1,9 +1,7 @@
 import { Component } from 'react'
-import BNavbar from 'react-bootstrap/Navbar'
-import Nav from 'react-bootstrap/Nav'
 import { authProvider } from '../auth-provider/auth-provider';
 import jwt_decode from "jwt-decode";
-import { LinkContainer } from 'react-router-bootstrap'
+import NavbarLink from './navbar-link'
 
 export default class Navbar extends Component {
     getUsername() {
@@ -14,19 +12,21 @@ export default class Navbar extends Component {
 
     render() {
         return (
-            <BNavbar bg="light" expand="sm">
-                <BNavbar.Brand>Welcome, {this.getUsername()}</BNavbar.Brand>
-                <BNavbar.Toggle />
-                <BNavbar.Collapse>
-                    <Nav className="mr-auto">
-                        <LinkContainer exact to="/"><Nav.Link>Skills</Nav.Link></LinkContainer>
-                        <LinkContainer to="/freetrack"><Nav.Link>Free Track</Nav.Link></LinkContainer>
-                    </Nav>
-                    <Nav className="justify-content-end">
-                        <Nav.Link onClick={authProvider.logout}>Logout</Nav.Link>
-                    </Nav>
-                </BNavbar.Collapse>
-            </BNavbar>
+            <nav className="navbar navbar-expand-sm navbar-light bg-light">
+                <span className="navbar-brand">Welcome, {this.getUsername()}</span>
+                <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent" aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span className="navbar-toggler-icon"></span>
+                </button>
+                <div className="collapse navbar-collapse" id="navbarContent">
+                    <ul className="navbar-nav mr-auto">
+                        <NavbarLink label="Skills" to="/" exact="true" />
+                        <NavbarLink label="Free Track" to="/freetrack"/>
+                    </ul>
+                    <ul className="navbar-nav justify-content-end">
+                        <li className="nav-item"><button className="nav-link btn btn-link" onClick={authProvider.logout}>Logout</button></li>
+                    </ul>
+                </div>
+            </nav>
         )
     }
 }
