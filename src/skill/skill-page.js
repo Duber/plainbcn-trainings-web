@@ -2,9 +2,6 @@ import { useState, useMemo, useEffect } from 'react'
 import { Table, SelectColumnFilter, TextSearchColumnFilter } from '../table/table';
 import './skill-page.css'
 import Api from '../api/api'
-import Container from 'react-bootstrap/Container'
-import Row from 'react-bootstrap/Row'
-import Col from 'react-bootstrap/Col'
 
 function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
@@ -53,15 +50,15 @@ export default function SkillPage() {
     ], [])
 
     return (
-        <Container fluid>
-            <Row>
-                <Col>
+        <div className="container-fluid">
+            <div className="row">
+                <div className="col">
                     <div className="skillTable" >
                         <Table columns={columns} data={sortedData} />
                         {data.length === 0 && <p>Loading ...</p>}
                     </div>
-                </Col>
-            </Row>
-        </Container>
+                </div>
+            </div>
+        </div>
     );
 }
