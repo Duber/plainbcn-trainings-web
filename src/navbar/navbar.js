@@ -5,8 +5,8 @@ import NavbarLink from './navbar-link'
 
 export default class Navbar extends Component {
     getUsername() {
-        let idtoken = window.localStorage.getItem("msal.idtoken")
-        var decodedidtoken = jwt_decode(idtoken);
+        const idtoken = window.localStorage.getItem("msal.idtoken")
+        const decodedidtoken = jwt_decode(idtoken);
         return decodedidtoken["preferred_username"]
     }
 
