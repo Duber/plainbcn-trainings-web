@@ -218,9 +218,6 @@ export default function FreeTrackPage() {
                                 </div>
                             </div>
                         </div>
-                        <div className="modal-footer">
-
-                        </div>
                     </div>
                 </div>
             </div>
