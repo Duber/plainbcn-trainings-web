@@ -16,7 +16,7 @@ export default function App() {
           <Navbar />
           <SkillPage />
         </Route>
-        <Route path="/freetrack/:id">
+        <Route path="/freetrack/:id?">
           <Navbar />
           <FreeTrackPage />
         </Route>

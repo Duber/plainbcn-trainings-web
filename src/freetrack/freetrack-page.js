@@ -1,10 +1,11 @@
-import { useState, useMemo, useEffect } from 'react'
+import { useState, useMemo, useEffect, useCallback } from 'react'
 import { Table, SelectColumnFilter, TextSearchColumnFilter } from '../table/table';
 import './freetrack-page.css'
 import Api from '../api/api'
 import { Fragment } from 'react';
 import FreeTrackNew from './freetrack-new'
 import $ from 'jquery'
+import { useParams, useHistory, Link } from 'react-router-dom'
 
 const unlikedCellStyleClasses = 'fas fa-heart'
 const likedCellStyleClasses = 'far fa-heart'
@@ -41,7 +42,7 @@ function ScheduledColumnFilter({
 }
 
 function ScheduledColumnFilterFn(rows, id, filterValue) {
-    let today = new Date()
+    const today = new Date()
     switch (filterValue) {
         case "true":
             return rows.filter((row) => (row.values[id] === null) || Date.parse(row.values[id]) >= today)
@@ -51,8 +52,8 @@ function ScheduledColumnFilterFn(rows, id, filterValue) {
 }
 
 function RenderLikes({ row, value, data, setData, currentLikes }) {
-    let cellStyle = row.values.liked ? likeColStyleClasses : unlikeColStyleClasses
-    let iconStyle = row.values.liked ? unlikedCellStyleClasses : likedCellStyleClasses
+    const cellStyle = row.values.liked ? likeColStyleClasses : unlikeColStyleClasses
+    const iconStyle = row.values.liked ? unlikedCellStyleClasses : likedCellStyleClasses
     const onclick = async () => {
         await toggleLike(row.index, data, setData)
     }
@@ -77,6 +78,8 @@ async function toggleLike(rowIndex, data, setData) {
 export default function FreeTrackPage() {
     const [data, setData] = useState([])
     const [modalData, setModalData] = useState({})
+    const { id } = useParams()
+    const history = useHistory()
 
     const initialState = {
         filters: [{ id: 'scheduled', value: 'true' }],
@@ -90,83 +93,94 @@ export default function FreeTrackPage() {
         return data.filter(d => d.scheduled === null || Date.parse(d.scheduled) >= today).reduce((numLikes, d) => numLikes + (d.liked ? 1 : 0), 0)
     }, [data])
 
+    const showModal = useCallback((row) => {
+        setModalData(row)
+        $('#freetrack-modal').modal('show')
+    }, [])
+
     useEffect(() => {
         async function getData() {
-            setData(await new Api().getFreeTrack())
+            const newData = await new Api().getFreeTrack()
+            setData(newData)
+            if (id) {
+                const [row] = newData.filter(d => d.id === id)
+                showModal(row)
+            }
         }
         getData()
     }, [])
 
-    function RenderTitle({ row, value }) {
+    const RenderTitle = useCallback(({ row, value }) => {
         const onclick = () => {
-            onclickRow(row)
+            showModal(row.values)
         }
+
         return (
-            <a href="# " onClick={onclick}>{value}</a>
+            <Link to={`/freetrack/${row.values.id}`} onClick={onclick}>{value}</Link>
         )
-    }
+    }, [showModal])
 
-    const columns = useMemo(() => [
-        {
-            Header: 'Type',
-            accessor: 'type',
-            Filter: SelectColumnFilter,
-            width: '10vmax'
-        },
-        {
-            Header: 'Area',
-            accessor: 'area',
-            Filter: SelectColumnFilter,
-            width: '10vmax'
-        },
-        {
-            Header: 'Level',
-            accessor: 'level',
-            Filter: SelectColumnFilter,
-            width: '10vmax'
-        },
-        {
-            Header: 'Title',
-            accessor: 'title',
-            Filter: TextSearchColumnFilter,
-            Cell: RenderTitle,
-            width: '40vmax'
-        },
-        {
-            Header: 'Scheduled',
-            accessor: 'scheduled',
-            Filter: ScheduledColumnFilter,
-            filter: ScheduledColumnFilterFn,
-            width: '10vmax'
-        },
-        {
-            Header: 'Likes',
-            accessor: 'likes',
-            disableFilters: true,
-            width: '1vmax',
-            Cell: RenderLikes
-        },
-        {
-            id: 'liked',
-            accessor: 'liked'
-        },
-        {
-            id: 'id',
-            accessor: 'id'
-        },
-        {
-            id: 'owner',
-            accessor: 'owner'
-        },
-        {
-            id: 'notes',
-            accessor: 'notes'
-        }
-    ], [])
+    const columns = useMemo(() =>
+        [
+            {
+                Header: 'Type',
+                accessor: 'type',
+                Filter: SelectColumnFilter,
+                width: '10vmax'
+            },
+            {
+                Header: 'Area',
+                accessor: 'area',
+                Filter: SelectColumnFilter,
+                width: '10vmax'
+            },
+            {
+                Header: 'Level',
+                accessor: 'level',
+                Filter: SelectColumnFilter,
+                width: '10vmax'
+            },
+            {
+                Header: 'Title',
+                accessor: 'title',
+                Filter: TextSearchColumnFilter,
+                Cell: RenderTitle,
+                width: '40vmax'
+            },
+            {
+                Header: 'Scheduled',
+                accessor: 'scheduled',
+                Filter: ScheduledColumnFilter,
+                filter: ScheduledColumnFilterFn,
+                width: '10vmax'
+            },
+            {
+                Header: 'Likes',
+                accessor: 'likes',
+                disableFilters: true,
+                width: '1vmax',
+                Cell: RenderLikes
+            },
+            {
+                id: 'liked',
+                accessor: 'liked'
+            },
+            {
+                id: 'id',
+                accessor: 'id'
+            },
+            {
+                id: 'owner',
+                accessor: 'owner'
+            },
+            {
+                id: 'notes',
+                accessor: 'notes'
+            }
+        ], [RenderTitle])
 
-    function onclickRow(row) {
-        setModalData(row.values)
-        $('#freetrack-modal').modal('show')
+    function onCloseModal() {
+        history.push('/freetrack')
     }
 
     return (
@@ -175,8 +189,8 @@ export default function FreeTrackPage() {
                 <div className="modal-dialog modal-dialog-centered">
                     <div className="modal-content">
                         <div className="modal-header">
-                            <h4 className="modal-title">Free Track</h4>
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">
+                            <h4 className="modal-title">Free Track {modalData.type}</h4>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close" onClick={onCloseModal}>
                                 <span aria-hidden="true">&times;</span>
                             </button>
                         </div>
