@@ -21,7 +21,7 @@ export default function FreeTrackModal(props) {
     }, [show, id])
 
     return (
-        <div className="modal" tabIndex="-1" id={id}>
+        <div className="modal" tabIndex="-1" id={id} aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
