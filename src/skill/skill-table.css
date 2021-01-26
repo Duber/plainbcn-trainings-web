@@ -1,3 +1,8 @@
 .skillTable th {
   background-color: white;
 }
+
+.skillTable .form-control {
+  width: auto;
+  min-width: 100%;
+}

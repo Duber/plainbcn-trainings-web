@@ -14,3 +14,8 @@
 .freetrack-likecol:enabled:hover {
   color: red;
 }
+
+.freetrack-table .form-control {
+  width: auto;
+  min-width: 100%;
+}
