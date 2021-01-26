@@ -3,15 +3,10 @@ import './skill-page.css'
 import Api from '../api/api'
 import SkillTable from './skill-table'
 import SkillModal from './skill-modal'
-import { useParams } from 'react-router-dom'
 
 export default function SkillPage() {
     const [data, setData] = useState([]);
     const sortedData = useMemo(() => sortData(data), [data])
-    const [modalData, setModalData] = useState({})
-    const [showModal, setShowModal] = useState(false)
-    const { id } = useParams()
-    const modalId = "skill-modal"
 
     useEffect(() => {
         async function getData() {
@@ -20,19 +15,9 @@ export default function SkillPage() {
         getData()
     }, [])
 
-    useEffect(() => {
-        if (id) {
-            const [row] = data.filter(d => d.id === id)
-            if (row) {
-                setModalData(row)
-            }
-        }
-        setShowModal(typeof id !== 'undefined')
-    }, [data, id])
-
     return (
         <Fragment>
-            <SkillModal id={modalId} data={modalData} show={showModal} />
+            <SkillModal data={data} />
             <div className="container-fluid">
                 <div className="row">
                     <div className="col">

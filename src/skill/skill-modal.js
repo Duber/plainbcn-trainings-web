@@ -1,24 +1,33 @@
 import $ from 'jquery'
-import { useHistory } from 'react-router-dom'
-import { useEffect } from 'react'
+import { useHistory, useParams } from 'react-router-dom'
+import { useEffect, useState } from 'react'
 import './skill-modal.css'
 
 export default function SkillModal(props) {
-    const { id, data, show } = props
+    const { data } = props
     const history = useHistory()
+    const { id } = useParams()
+    const [modalData, setModalData] = useState({})
+    const modalId = "skill-modal"
 
     useEffect(() => {
-        $(`#${id}`).on('hidden.bs.modal', function (event) {
+        $(`#${modalId}`).on('hidden.bs.modal', function (event) {
             history.push('/skill')
         })
-    }, [id, history])
+    }, [modalId, history])
 
     useEffect(() => {
-        $(`#${id}`).modal(show ? 'show' : 'hide')
-    }, [show, id])
+        if (id) {
+            const [row] = data.filter(d => d.id === id)
+            if (row) {
+                setModalData(row)
+            }
+        }
+        $(`#${modalId}`).modal(typeof id !== 'undefined' ? 'show' : 'hide')
+    }, [data, id])
 
     return (
-        <div className="modal" tabIndex="-1" id={id} aria-hidden="true">
+        <div className="modal" tabIndex="-1" id={modalId} aria-hidden="true">
             <div className="modal-dialog modal-dialog-centered">
                 <div className="modal-content">
                     <div className="modal-header">
@@ -31,19 +40,19 @@ export default function SkillModal(props) {
                         <div className="container-fluid">
                             <div className="row">
                                 <div className="col-2">Title:</div>
-                                <div className="col-auto">{data.title}</div>
+                                <div className="col-auto">{modalData.title}</div>
                             </div>
                             <div className="row">
                                 <div className="col-2">Area:</div>
-                                <div className="col-auto">{data.area}</div>
+                                <div className="col-auto">{modalData.area}</div>
                             </div>
                             <div className="row">
                                 <div className="col-2">Level:</div>
-                                <div className="col-auto">{data.level}</div>
+                                <div className="col-auto">{modalData.level}</div>
                             </div>
                             <div className="row">
                                 <div className="col-2">Scope:</div>
-                                <div className="col">{data.scope}</div>
+                                <div className="col">{modalData.scope}</div>
                             </div>
                         </div>
                     </div>
