@@ -11,7 +11,7 @@ const likeColStyleClasses = 'freetrack-likecol freetrack-likecol__liked'
 const maxLikes = 3
 
 export default function FreeTrackTable(props) {
-    const { data, setData, onclick } = props
+    const { data, setData } = props
 
     const initialState = {
         filters: [{ id: 'scheduled', value: 'true' }],
@@ -83,7 +83,7 @@ export default function FreeTrackTable(props) {
 
     return (
         <div className="freetrack-table" >
-            <Table columns={columns} data={data} initialState={initialState} setData={setData} currentLikes={currentLikes} onclick={onclick} />
+            <Table columns={columns} data={data} initialState={initialState} setData={setData} currentLikes={currentLikes} />
             {data.length === 0 && <p>Loading ...</p>}
         </div>
     )
@@ -141,11 +141,8 @@ async function toggleLike(rowIndex, data, setData) {
     row.liked ? await new Api().likeFreeTrack(row.id) : await new Api().unlikeFreeTrack(row.id)
 }
 
-function RenderTitle({ row, value, onclick }) {
-    const click = () => {
-        onclick(row.values)
-    }
+function RenderTitle({ row, value }) {
     return (
-        <Link to={`/freetrack/${row.values.id}`} onClick={click}>{value}</Link>
+        <Link to={`/freetrack/${row.values.id}`}>{value}</Link>
     )
 }

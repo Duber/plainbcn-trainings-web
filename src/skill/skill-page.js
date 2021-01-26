@@ -30,18 +30,13 @@ export default function SkillPage() {
         setShowModal(typeof id !== 'undefined')
     }, [data, id])
 
-    function onclick(row) {
-        setModalData(row)
-        setShowModal(true)
-    }
-
     return (
         <Fragment>
             <SkillModal id={modalId} data={modalData} show={showModal} />
             <div className="container-fluid">
                 <div className="row">
                     <div className="col">
-                        <SkillTable data={sortedData} onclick={onclick} />
+                        <SkillTable data={sortedData} />
                     </div>
                 </div>
             </div>

@@ -32,11 +32,6 @@ export default function FreeTrackPage() {
         setShowModal(typeof id !== 'undefined')
     }, [data, id])
 
-    function onclick(row) {
-        setModalData(row)
-        setShowModal(true)
-    }
-
     return (
         <Fragment>
             <FreeTrackModal id={modalId} data={modalData} show={showModal} />
@@ -48,7 +43,7 @@ export default function FreeTrackPage() {
                 </div>
                 <div className="row">
                     <div className="col">
-                        <FreeTrackTable data={sortedData} setData={setData} onclick={onclick} />
+                        <FreeTrackTable data={sortedData} setData={setData} />
                     </div>
                 </div>
             </div>

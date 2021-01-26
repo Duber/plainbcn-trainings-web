@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom'
 import './skill-table.css'
 
 export default function SkillTable(props) {
-    const { data, onclick } = props
+    const { data } = props
 
     const initialState = {
         hiddenColumns: ['id', 'scope']
@@ -48,7 +48,7 @@ export default function SkillTable(props) {
 
     return (
         <div className="skillTable" >
-            <Table columns={columns} data={data} initialState={initialState} onclick={onclick} />
+            <Table columns={columns} data={data} initialState={initialState} />
             {data.length === 0 && <p>Loading ...</p>}
         </div>
     )
@@ -58,12 +58,8 @@ function capitalize(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
-function RenderTitle({ row, value, onclick }) {
-    const click = () => {
-        onclick(row.values)
-    }
-
+function RenderTitle({ row, value }) {
     return (
-        <Link to={`/skill/${row.values.id}`} onClick={click}>{value}</Link>
+        <Link to={`/skill/${row.values.id}`}>{value}</Link>
     )
 }
