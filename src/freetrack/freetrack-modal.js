@@ -4,20 +4,17 @@ import { useEffect } from 'react'
 import './freetrack-modal.css'
 
 export default function FreeTrackModal(props) {
-    const { id, data, show, setShow } = props
+    const { id, data, show } = props
     const history = useHistory()
 
     useEffect(() => {
         $(`#${id}`).on('hidden.bs.modal', function (event) {
-            setShow(false)
             history.push('/freetrack')
         })
-    }, [id, history, setShow])
+    }, [id, history])
 
     useEffect(() => {
-        if (show) {
-            $(`#${id}`).modal('show')
-        }
+        $(`#${id}`).modal(show ? 'show' : 'hide')
     }, [show, id])
 
     return (

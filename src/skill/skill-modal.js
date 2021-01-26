@@ -4,20 +4,17 @@ import { useEffect } from 'react'
 import './skill-modal.css'
 
 export default function SkillModal(props) {
-    const { id, data, show, setShow} = props
+    const { id, data, show } = props
     const history = useHistory()
 
     useEffect(() => {
         $(`#${id}`).on('hidden.bs.modal', function (event) {
-            setShow(false)
             history.push('/skill')
         })
-    }, [id, history, setShow])
+    }, [id, history])
 
     useEffect(() => {
-        if (show) {
-            $(`#${id}`).modal('show')
-        }
+        $(`#${id}`).modal(show ? 'show' : 'hide')
     }, [show, id])
 
     return (

@@ -23,21 +23,21 @@ export default function SkillPage() {
     useEffect(() => {
         if (id) {
             const [row] = data.filter(d => d.id === id)
-            if (row){
+            if (row) {
                 setModalData(row)
-                setShowModal(true)
             }
         }
+        setShowModal(typeof id !== 'undefined')
     }, [data, id])
 
-    function onclick(row){
+    function onclick(row) {
         setModalData(row)
         setShowModal(true)
     }
 
     return (
         <Fragment>
-            <SkillModal id={modalId} data={modalData} show={showModal} setShow={setShowModal} />
+            <SkillModal id={modalId} data={modalData} show={showModal} />
             <div className="container-fluid">
                 <div className="row">
                     <div className="col">

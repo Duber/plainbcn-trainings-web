@@ -27,9 +27,9 @@ export default function FreeTrackPage() {
             const [row] = data.filter(d => d.id === id)
             if (row) {
                 setModalData(row)
-                setShowModal(true)
             }
         }
+        setShowModal(typeof id !== 'undefined')
     }, [data, id])
 
     function onclick(row) {
@@ -39,7 +39,7 @@ export default function FreeTrackPage() {
 
     return (
         <Fragment>
-            <FreeTrackModal id={modalId} data={modalData} show={showModal} setShow={setShowModal} />
+            <FreeTrackModal id={modalId} data={modalData} show={showModal} />
             <div className="container-fluid">
                 <div className="row">
                     <div className="col">
