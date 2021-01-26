@@ -93,7 +93,7 @@ function ScheduledColumnFilter({
     column: { filterValue, setFilter, preFilteredRows, id },
 }) {
     return (
-        <select
+        <select className="form-control form-control-sm"
             value={filterValue}
             onChange={e => {
                 setFilter(e.target.value || undefined)

@@ -1,5 +1,6 @@
 import React from 'react'
 import { useTable, useFilters } from 'react-table'
+import './table.css'
 
 // This is a custom filter UI for selecting
 // a unique option from a list
@@ -19,6 +20,7 @@ export function SelectColumnFilter({
     // Render a multi-select box
     return (
         <select
+            className="form-control form-control-sm"
             value={filterValue}
             onChange={e => {
                 setFilter(e.target.value || undefined)
@@ -41,7 +43,7 @@ export function TextSearchColumnFilter({
     const count = preFilteredRows.length
 
     return (
-        <input
+        <input className="form-control form-control-sm"
             value={filterValue || ''}
             onChange={e => {
                 setFilter(e.target.value || undefined) // Set undefined to remove the filter entirely
@@ -60,42 +62,44 @@ export function Table(options) {
         rows,
         prepareRow
     } = useTable(options, useFilters)
-    
+
     // Render the UI for your table
     return (
-        <table className="table table-responsive-sm table-striped table-bordered table-hover" {...getTableProps()}>
-            <thead>
-                {headerGroups.map(headerGroup => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                        {headerGroup.headers.map(column => (
-                            <th style={{ width: column.width }} {...column.getHeaderProps()}>
-                                {column.render('Header')}
-                            </th>
-                        ))}
-                    </tr>
-                ))}
-                {headerGroups.map(headerGroup => (
-                    <tr {...headerGroup.getHeaderGroupProps()}>
-                        {headerGroup.headers.map(column => (
-                            <th style={{ width: column.width }} {...column.getHeaderProps()}>
-                                {column.canFilter ? column.render('Filter') : null}
-                            </th>
-                        ))}
-                    </tr>
-                ))}
-            </thead>
-            <tbody {...getTableBodyProps()}>
-                {rows.map((row, i) => {
-                    prepareRow(row)
-                    return (
-                        <tr {...row.getRowProps()}>
-                            {row.cells.map(cell => {
-                                return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
-                            })}
+        <div className="table-responsive">
+            <table className="table table-sm table-striped table-bordered table-hover" {...getTableProps()}>
+                <thead>
+                    {headerGroups.map(headerGroup => (
+                        <tr {...headerGroup.getHeaderGroupProps()}>
+                            {headerGroup.headers.map(column => (
+                                <th style={{ width: column.width }} {...column.getHeaderProps()}>
+                                    {column.render('Header')}
+                                </th>
+                            ))}
                         </tr>
-                    )
-                })}
-            </tbody>
-        </table>
+                    ))}
+                    {headerGroups.map(headerGroup => (
+                        <tr {...headerGroup.getHeaderGroupProps()}>
+                            {headerGroup.headers.map(column => (
+                                <th style={{ width: column.width }} {...column.getHeaderProps()}>
+                                    {column.canFilter ? column.render('Filter') : null}
+                                </th>
+                            ))}
+                        </tr>
+                    ))}
+                </thead>
+                <tbody {...getTableBodyProps()}>
+                    {rows.map((row, i) => {
+                        prepareRow(row)
+                        return (
+                            <tr {...row.getRowProps()}>
+                                {row.cells.map(cell => {
+                                    return <td {...cell.getCellProps()}>{cell.render('Cell')}</td>
+                                })}
+                            </tr>
+                        )
+                    })}
+                </tbody>
+            </table>
+        </div>
     )
 }
