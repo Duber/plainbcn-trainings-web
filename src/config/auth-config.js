@@ -1,0 +1,6 @@
+export default class AuthConfig {
+    static REACT_APP_AUTH_AAD_AUTHORITY = process.env.REACT_APP_AUTH_AAD_AUTHORITY
+    static REACT_APP_AUTH_CLIENTID = process.env.REACT_APP_AUTH_CLIENTID
+    static REACT_APP_AUTH_REDIRECTURL = process.env.REACT_APP_AUTH_REDIRECTURL
+    static REACT_APP_AUTH_SCOPE = process.env.REACT_APP_AUTH_SCOPE
+}

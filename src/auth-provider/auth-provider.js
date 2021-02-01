@@ -1,10 +1,11 @@
 import { MsalAuthProvider, LoginType } from 'react-aad-msal';
+import AuthConfig from '../config/auth-config'
 
 const config = {
     auth: {
-        authority: process.env.REACT_APP_AUTH_AAD_AUTHORITY,
-        clientId: process.env.REACT_APP_AUTH_CLIENTID,
-        redirectUri: process.env.REACT_APP_AUTH_REDIRECTURL
+        authority: AuthConfig.REACT_APP_AUTH_AAD_AUTHORITY,
+        clientId: AuthConfig.REACT_APP_AUTH_CLIENTID,
+        redirectUri: AuthConfig.REACT_APP_AUTH_REDIRECTURL
     },
     cache: {
         cacheLocation: "localStorage",
@@ -15,7 +16,7 @@ const config = {
 // Authentication Parameters
 const authenticationParameters = {
     scopes: [
-        process.env.REACT_APP_AUTH_SCOPE
+        AuthConfig.REACT_APP_AUTH_SCOPE
     ]
 }
 

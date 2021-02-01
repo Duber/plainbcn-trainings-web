@@ -1,0 +1,3 @@
+export default class AppInsightsConfig {
+    static REACT_APP_APPINSIGHTS_INSTRUMENTATIONKEY = process.env.REACT_APP_APPINSIGHTS_INSTRUMENTATIONKEY
+}
