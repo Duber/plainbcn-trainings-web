@@ -3,9 +3,9 @@ import AuthConfig from '../config/auth-config'
 
 const config = {
     auth: {
-        authority: AuthConfig.REACT_APP_AUTH_AAD_AUTHORITY,
-        clientId: AuthConfig.REACT_APP_AUTH_CLIENTID,
-        redirectUri: AuthConfig.REACT_APP_AUTH_REDIRECTURL
+        authority: AuthConfig.AUTH_AAD_AUTHORITY,
+        clientId: AuthConfig.AUTH_CLIENTID,
+        redirectUri: AuthConfig.AUTH_REDIRECTURL
     },
     cache: {
         cacheLocation: "localStorage",
@@ -16,7 +16,7 @@ const config = {
 // Authentication Parameters
 const authenticationParameters = {
     scopes: [
-        AuthConfig.REACT_APP_AUTH_SCOPE
+        AuthConfig.AUTH_SCOPE
     ]
 }
 

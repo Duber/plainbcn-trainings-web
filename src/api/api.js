@@ -5,7 +5,7 @@ export default class Api {
     async getSkills() {
         const tokenResponse = await authProvider.getAccessToken()
         const token = tokenResponse.accessToken
-        const url = APIConfig.REACT_APP_SKILL_API_URL;
+        const url = APIConfig.SKILL_API_URL;
         const options = {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -17,7 +17,7 @@ export default class Api {
     async getFreeTrack() {
         const tokenResponse = await authProvider.getAccessToken()
         const token = tokenResponse.accessToken
-        const url = APIConfig.REACT_APP_FREETRACK_API_URL;
+        const url = APIConfig.FREETRACK_API_URL;
         const options = {
             headers: {
                 Authorization: `Bearer ${token}`
@@ -29,7 +29,7 @@ export default class Api {
     async likeFreeTrack(id) {
         const tokenResponse = await authProvider.getAccessToken()
         const token = tokenResponse.accessToken
-        const url = `${APIConfig.REACT_APP_FREETRACK_API_URL}/like`;
+        const url = `${APIConfig.FREETRACK_API_URL}/like`;
         const options = {
             method: "POST",
             headers: {
@@ -45,7 +45,7 @@ export default class Api {
     async unlikeFreeTrack(id) {
         const tokenResponse = await authProvider.getAccessToken()
         const token = tokenResponse.accessToken
-        const url = `${APIConfig.REACT_APP_FREETRACK_API_URL}/unlike`;
+        const url = `${APIConfig.FREETRACK_API_URL}/unlike`;
         const options = {
             method: "POST",
             headers: {

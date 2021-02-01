@@ -9,7 +9,7 @@ import AppInsightsConfig from './config/appinsights-config'
 
 const appInsights = new ApplicationInsights({
   config: {
-    instrumentationKey: AppInsightsConfig.REACT_APP_APPINSIGHTS_INSTRUMENTATIONKEY,
+    instrumentationKey: AppInsightsConfig.APPINSIGHTS_INSTRUMENTATIONKEY,
     enableAutoRouteTracking: true
   }
 });
