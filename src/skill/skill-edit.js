@@ -107,9 +107,9 @@ export default function SkillEdit() {
                 </div>
                 <div className="col">
                     <div className="btn-group" role="group" aria-label="Qualified?">
-                        <button type="button" className={`btn btn-sm shadow-none ${qualifiedBtnStyle.notEvaluated}`} onClick={onClickNotEvaluated}>Not Evaluated</button>
-                        <button type="button" className={`btn btn-sm shadow-none ${qualifiedBtnStyle.yes}`} onClick={onClickQualified}>Yes</button>
-                        <button type="button" className={`btn btn-sm shadow-none ${qualifiedBtnStyle.no}`} onClick={onClickNotQualified}>No</button>
+                        <button type="button" className={`btn btn-sm shadow-none ${qualifiedBtnStyle.notEvaluated}`} onClick={onClickNotEvaluated} disabled={!data.published}>Not Evaluated</button>
+                        <button type="button" className={`btn btn-sm shadow-none ${qualifiedBtnStyle.yes}`} onClick={onClickQualified} disabled={!data.published}>Yes</button>
+                        <button type="button" className={`btn btn-sm shadow-none ${qualifiedBtnStyle.no}`} onClick={onClickNotQualified} disabled={!data.published}>No</button>
                     </div>
                 </div>
             </div>
