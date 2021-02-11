@@ -1,6 +1,5 @@
-import { Link } from 'react-router-dom'
 import { useState, useEffect } from 'react'
-import { useParams } from 'react-router-dom'
+import { useHistory, useParams } from 'react-router-dom'
 import Api from '../api/api'
 import './skill-edit.css'
 
@@ -14,6 +13,7 @@ export default function SkillEdit() {
         no: qualifiedBtnOff
     })
     const { id } = useParams()
+    const history = useHistory()
 
     useEffect(() => {
         async function getData() {
@@ -72,9 +72,7 @@ export default function SkillEdit() {
         <div className="container-fluid">
             <div className="row">
                 <div className="col-1">
-                    <Link to={`/skill`}>
-                        <button className="btn btn-block btn-outline-secondary">Back</button>
-                    </Link>
+                    <button type="button" className="btn btn-block btn-outline-secondary" onClick={() => history.push("/skill")}>Back</button>
                 </div>
             </div>
             <div className="row">
