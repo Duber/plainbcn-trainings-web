@@ -106,7 +106,8 @@ function ScheduledColumnFilter({
 }
 
 function ScheduledColumnFilterFn(rows, id, filterValue) {
-    const today = new Date()
+    let today = new Date()
+    today.setHours(0,0,0,0)
     switch (filterValue) {
         case "true":
             return rows.filter((row) => (row.values[id] === null) || Date.parse(row.values[id]) >= today)
