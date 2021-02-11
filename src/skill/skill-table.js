@@ -32,7 +32,7 @@ export default function SkillTable(props) {
         },
         {
             Header: 'Qualified?',
-            accessor: d => capitalize((d.accomplished ?? "not evaluated").toString()),
+            accessor: d => qualifiedMapper(d),
             Filter: SelectColumnFilter,
             width: "10vmax"
         },
@@ -52,10 +52,11 @@ export default function SkillTable(props) {
             {data.length === 0 && <p>Loading ...</p>}
         </div>
     )
-}
 
-function capitalize(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
+    function qualifiedMapper(d) {
+        if (d.accomplished === null) return "Not evaluated"
+        return d.accomplished ? "Yes" : "No"
+    }
 }
 
 function RenderTitle({ row, value }) {
