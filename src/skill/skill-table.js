@@ -7,6 +7,7 @@ export default function SkillTable(props) {
     const { data } = props
 
     const initialState = {
+        filters: [{ id: 'published', value: 'Published' }],
         hiddenColumns: ['id', 'scope']
     }
 
@@ -27,8 +28,15 @@ export default function SkillTable(props) {
             Header: 'Title',
             accessor: 'title',
             Filter: TextSearchColumnFilter,
-            width: "60vmax",
+            width: "55vmax",
             Cell: RenderTitle
+        },
+        {
+            id: 'published',
+            Header: 'Status',
+            accessor: d => publishedMapper(d),
+            Filter: SelectColumnFilter,
+            width: "5vmax"
         },
         {
             Header: 'Qualified?',
@@ -48,15 +56,24 @@ export default function SkillTable(props) {
 
     return (
         <div className="skillTable" >
-            <Table columns={columns} data={data} initialState={initialState} />
+            <Table columns={columns} data={data} initialState={initialState} defaultFiltered={[
+                {
+                    id: 'lastName',
+                    value: 'Published'
+                }
+            ]} />
             {data.length === 0 && <p>Loading ...</p>}
         </div>
     )
+}
 
-    function qualifiedMapper(d) {
-        if (d.accomplished === null) return "Not evaluated"
-        return d.accomplished ? "Yes" : "No"
-    }
+function qualifiedMapper(d) {
+    if (d.accomplished === null) return "Not evaluated"
+    return d.accomplished ? "Yes" : "No"
+}
+
+function publishedMapper(d) {
+    return d.published ? "Published" : "Draft"
 }
 
 function RenderTitle({ row, value }) {
