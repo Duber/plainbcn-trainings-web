@@ -14,6 +14,22 @@ export default class Api {
         return fetch(url, options).then((result) => result.json())
     }
 
+    async evaluateSkill(skillId, isAccomplished) {
+        const tokenResponse = await authProvider.getAccessToken()
+        const token = tokenResponse.accessToken
+        const url = `${APIConfig.SKILL_API_URL}/${skillId}`;
+        const options = {
+            method: "PATCH",
+            headers: {
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json;charset=utf-8',
+            },
+            body: JSON.stringify({ isAccomplished: isAccomplished })
+        }
+        const res = await fetch(url, options)
+        if (!res.ok) throw new Error(`likeFreeTrack with id ${skillId} resulted in ${res.status}:${res.statusText}`)
+    }
+
     async getFreeTrack() {
         const tokenResponse = await authProvider.getAccessToken()
         const token = tokenResponse.accessToken

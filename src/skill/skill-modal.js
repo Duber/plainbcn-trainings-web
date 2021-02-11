@@ -2,6 +2,7 @@ import $ from 'jquery'
 import { useHistory, useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import './skill-modal.css'
+import SkillConfig from '../config/skill-config'
 
 export default function SkillModal(props) {
     const { data } = props
@@ -17,6 +18,7 @@ export default function SkillModal(props) {
     }, [modalId, history])
 
     useEffect(() => {
+        if (SkillConfig.FLAGS_SELFEVALUATION) return
         if (id) {
             const [row] = data.filter(d => d.id === id)
             if (row) {

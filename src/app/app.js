@@ -4,20 +4,26 @@ import 'jquery'
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 import SkillPage from '../skill/skill-page'
 import FreeTrackPage from '../freetrack/freetrack-page'
+import SkillEdit from '../skill/skill-edit'
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import Navbar from '../navbar/navbar'
 import NotFound from '../not-found/not-found'
+import SkillConfig from '../config/skill-config'
 
 export default function App() {
   return (
     <Router>
       <Switch>
         <Route exact path="/">
-          <Redirect to="/skill"/>
+          <Redirect to="/skill" />
         </Route>
-        <Route path="/skill/:id?">
+        <Route exact={true} path="/skill">
           <Navbar />
           <SkillPage />
+        </Route>
+        <Route path="/skill/:id">
+          <Navbar />
+          {SkillConfig.FLAGS_SELFEVALUATION ? <SkillEdit /> : <SkillPage />}
         </Route>
         <Route path="/freetrack/:id?">
           <Navbar />
