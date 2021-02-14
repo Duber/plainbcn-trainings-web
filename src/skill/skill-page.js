@@ -1,8 +1,8 @@
 import { useState, useMemo, useEffect, Fragment } from 'react'
 import './skill-page.css'
-import { api } from '../api/api'
 import SkillTable from './skill-table'
 import SkillModal from './skill-modal'
+import { skillService } from './skill-service'
 
 export default function SkillPage() {
     const [data, setData] = useState([]);
@@ -10,15 +10,7 @@ export default function SkillPage() {
 
     useEffect(() => {
         async function getData() {
-            let skills = await api.getSkills()
-            const user = await api.getUser()
-            skills = skills.map(s => {
-                return {
-                    ...s,
-                    accomplished: user.skills.fit.includes(s.id) ? true : user.skills.unfit.includes(s.id) ? false : null
-                }
-            })
-            setData(skills)
+            setData(await skillService.getSkills())
         }
         getData()
     }, [])

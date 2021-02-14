@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { api } from '../api/api'
+import { skillService } from './skill-service'
 import './skill-edit.css'
 
 export default function SkillEdit() {
@@ -18,10 +19,7 @@ export default function SkillEdit() {
     useEffect(() => {
         async function getData() {
             if (!id) return
-            const skill = await api.getSkill(id)
-            const user = await api.getUser()
-            skill.accomplished = user.skills.fit.includes(id) ? true : user.skills.unfit.includes(id) ? false : null
-            setData(skill)
+            setData(await skillService.getSkill(id))
         }
         getData()
     }, [id])
