@@ -2,8 +2,8 @@ import { api } from '../api/api'
 
 export default class FreeTrackService {
     async getAll() {
-        const [fts, user] = await Promise.all([api.getFreeTrack(), api.getUser()])
-        fts.map(ft => {
+        let [fts, user] = await Promise.all([api.getFreeTrack(), api.getUser()])
+        fts = fts.map(ft => {
             return {
                 ...ft,
                 liked: user.freetrack.likes.includes(ft.id)
