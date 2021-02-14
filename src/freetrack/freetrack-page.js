@@ -1,6 +1,6 @@
 import { useState, useMemo, useEffect, Fragment } from 'react'
 import './freetrack-page.css'
-import Api from '../api/api'
+import { freetrackService } from './freetrack-service'
 import FreeTrackNew from './freetrack-new'
 import FreeTrackModal from './freetrack-modal'
 import FreeTrackTable from './freetrack-table'
@@ -11,8 +11,7 @@ export default function FreeTrackPage() {
 
     useEffect(() => {
         async function getData() {
-            const newData = await new Api().getFreeTrack()
-            setData(newData)
+            setData(await freetrackService.getAll())
         }
         getData()
     }, [])

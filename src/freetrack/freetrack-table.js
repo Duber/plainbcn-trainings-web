@@ -1,7 +1,7 @@
 import { useMemo } from 'react'
 import { Table, SelectColumnFilter, TextSearchColumnFilter } from '../table/table';
 import { Link } from 'react-router-dom'
-import Api from '../api/api'
+import { freetrackService } from './freetrack-service'
 import './freetrack-table.css'
 
 const unlikedCellStyleClasses = 'fas fa-heart'
@@ -139,7 +139,7 @@ async function toggleLike(rowIndex, data, setData) {
         }
         return r
     }))
-    row.liked ? await new Api().likeFreeTrack(row.id) : await new Api().unlikeFreeTrack(row.id)
+    row.liked ? await freetrackService.Like(row.id) : await freetrackService.Unlike(row.id)
 }
 
 function RenderTitle({ row, value }) {

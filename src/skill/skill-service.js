@@ -2,8 +2,7 @@ import { api } from '../api/api'
 
 export default class SkillService {
     async getSkills() {
-        let skills = await api.getSkills()
-        const user = await api.getUser()
+        let [skills, user] = await Promise.all([api.getSkills(), api.getUser()])
         skills = skills.map(s => {
             return {
                 ...s,
