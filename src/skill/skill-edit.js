@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
-import Api from '../api/api'
+import { api } from '../api/api'
 import './skill-edit.css'
 
 export default function SkillEdit() {
@@ -17,13 +17,11 @@ export default function SkillEdit() {
 
     useEffect(() => {
         async function getData() {
-            const data = await new Api().getSkills()
-            if (id) {
-                const [row] = data.filter(d => d.id === id)
-                if (row) {
-                    setData(row)
-                }
-            }
+            if (!id) return
+            const skill = await api.getSkill(id)
+            const user = await api.getUser()
+            skill.accomplished = user.skills.fit.includes(id) ? true : user.skills.unfit.includes(id) ? false : null
+            setData(skill)
         }
         getData()
     }, [id])
@@ -45,7 +43,11 @@ export default function SkillEdit() {
                 accomplished: true
             }
         })
-        return new Api().evaluateSkill(data.id, true)
+        const user = await api.getUser()
+        user.skills.fit = user.skills.fit.filter(s => s !== data.id)
+        user.skills.unfit = user.skills.unfit.filter(s => s !== data.id)
+        user.skills.fit.push(data.id)
+        await api.saveUser(user)
     }
 
     const onClickNotQualified = async () => {
@@ -55,7 +57,11 @@ export default function SkillEdit() {
                 accomplished: false
             }
         })
-        return new Api().evaluateSkill(data.id, false)
+        const user = await api.getUser()
+        user.skills.fit = user.skills.fit.filter(s => s !== data.id)
+        user.skills.unfit = user.skills.unfit.filter(s => s !== data.id)
+        user.skills.unfit.push(data.id)
+        await api.saveUser(user)
     }
 
     const onClickNotEvaluated = async () => {
@@ -65,7 +71,10 @@ export default function SkillEdit() {
                 accomplished: null
             }
         })
-        return new Api().evaluateSkill(data.id, null)
+        const user = await api.getUser()
+        user.skills.fit = user.skills.fit.filter(s => s !== data.id)
+        user.skills.unfit = user.skills.unfit.filter(s => s !== data.id)
+        await api.saveUser(user)
     }
 
     return (
