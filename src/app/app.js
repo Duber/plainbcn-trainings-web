@@ -8,7 +8,6 @@ import SkillEdit from '../skill/skill-edit'
 import { BrowserRouter as Router, Switch, Route, Redirect } from "react-router-dom";
 import Navbar from '../navbar/navbar'
 import NotFound from '../not-found/not-found'
-import SkillConfig from '../config/skill-config'
 
 export default function App() {
   return (
@@ -23,7 +22,7 @@ export default function App() {
         </Route>
         <Route path="/skill/:id">
           <Navbar />
-          {SkillConfig.FLAGS_SELFEVALUATION ? <SkillEdit /> : <SkillPage />}
+          <SkillEdit />
         </Route>
         <Route path="/freetrack/:id?">
           <Navbar />

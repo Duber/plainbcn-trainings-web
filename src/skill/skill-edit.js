@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { useHistory, useParams } from 'react-router-dom'
 import { api } from '../api/api'
 import { skillService } from './skill-service'
+import { skillQualifications } from './skill-qualifications'
 import './skill-edit.css'
 
 export default function SkillEdit() {
@@ -11,7 +12,8 @@ export default function SkillEdit() {
     const [qualifiedBtnStyle, setQualifiedBtnStyle] = useState({
         notEvaluated: qualifiedBtnOff,
         yes: qualifiedBtnOff,
-        no: qualifiedBtnOff
+        no: qualifiedBtnOff,
+        notInterested: qualifiedBtnOff
     })
     const { id } = useParams()
     const history = useHistory()
@@ -25,11 +27,12 @@ export default function SkillEdit() {
     }, [id])
 
     useEffect(() => {
-        if (typeof data.accomplished === 'undefined') return
+        if (typeof data.qualification === 'undefined') return
         const q = {
-            notEvaluated: data.accomplished === null ? qualifiedBtnOn : qualifiedBtnOff,
-            yes: data.accomplished ? qualifiedBtnOn : qualifiedBtnOff,
-            no: data.accomplished !== null && !data.accomplished ? qualifiedBtnOn : qualifiedBtnOff
+            notEvaluated: data.qualification === null ? qualifiedBtnOn : qualifiedBtnOff,
+            yes: data.qualification === skillQualifications.QUALIFIED ? qualifiedBtnOn : qualifiedBtnOff,
+            no: data.qualification === skillQualifications.NOT_QUALIFIED ? qualifiedBtnOn : qualifiedBtnOff,
+            notInterested: data.qualification === skillQualifications.NOT_INTERESTED ? qualifiedBtnOn : qualifiedBtnOff
         }
         setQualifiedBtnStyle(q)
     }, [data])
@@ -38,12 +41,13 @@ export default function SkillEdit() {
         setData(prev => {
             return {
                 ...data,
-                accomplished: true
+                qualification: skillQualifications.QUALIFIED
             }
         })
         const user = await api.getUser()
         user.skills.fit = user.skills.fit.filter(s => s !== data.id)
         user.skills.unfit = user.skills.unfit.filter(s => s !== data.id)
+        user.skills.notInterested = user.skills.notInterested.filter(s => s !== data.id)
         user.skills.fit.push(data.id)
         await api.saveUser(user)
     }
@@ -52,12 +56,13 @@ export default function SkillEdit() {
         setData(prev => {
             return {
                 ...data,
-                accomplished: false
+                qualification: skillQualifications.NOT_QUALIFIED
             }
         })
         const user = await api.getUser()
         user.skills.fit = user.skills.fit.filter(s => s !== data.id)
         user.skills.unfit = user.skills.unfit.filter(s => s !== data.id)
+        user.skills.notInterested = user.skills.notInterested.filter(s => s !== data.id)
         user.skills.unfit.push(data.id)
         await api.saveUser(user)
     }
@@ -66,12 +71,28 @@ export default function SkillEdit() {
         setData(prev => {
             return {
                 ...data,
-                accomplished: null
+                qualification: null
             }
         })
         const user = await api.getUser()
         user.skills.fit = user.skills.fit.filter(s => s !== data.id)
         user.skills.unfit = user.skills.unfit.filter(s => s !== data.id)
+        user.skills.notInterested = user.skills.notInterested.filter(s => s !== data.id)
+        await api.saveUser(user)
+    }
+
+    const onClickNotInterested = async () => {
+        setData(prev => {
+            return {
+                ...data,
+                qualification: skillQualifications.NOT_INTERESTED
+            }
+        })
+        const user = await api.getUser()
+        user.skills.fit = user.skills.fit.filter(s => s !== data.id)
+        user.skills.unfit = user.skills.unfit.filter(s => s !== data.id)
+        user.skills.notInterested = user.skills.notInterested.filter(s => s !== data.id)
+        user.skills.notInterested.push(data.id)
         await api.saveUser(user)
     }
 
@@ -115,6 +136,7 @@ export default function SkillEdit() {
                         <button type="button" className={`btn btn-sm shadow-none ${qualifiedBtnStyle.notEvaluated}`} onClick={onClickNotEvaluated} disabled={!data.published}>Not Evaluated</button>
                         <button type="button" className={`btn btn-sm shadow-none ${qualifiedBtnStyle.yes}`} onClick={onClickQualified} disabled={!data.published}>Yes</button>
                         <button type="button" className={`btn btn-sm shadow-none ${qualifiedBtnStyle.no}`} onClick={onClickNotQualified} disabled={!data.published}>No</button>
+                        <button type="button" className={`btn btn-sm shadow-none ${qualifiedBtnStyle.notInterested}`} onClick={onClickNotInterested} disabled={!data.published}>Not Interested</button>
                     </div>
                 </div>
             </div>

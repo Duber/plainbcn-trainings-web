@@ -1,4 +1,5 @@
 import { api } from '../api/api'
+import { skillQualifications } from './skill-qualifications'
 
 export default class SkillService {
     async getSkills() {
@@ -6,7 +7,7 @@ export default class SkillService {
         skills = skills.map(s => {
             return {
                 ...s,
-                accomplished: isAccomplished(user, s)
+                qualification: evaluate(user, s)
             }
         })
         return skills
@@ -17,14 +18,16 @@ export default class SkillService {
         const user = await api.getUser()
         return {
             ...skill,
-            accomplished: isAccomplished(user, skill)
+            qualification: evaluate(user, skill)
         }
     }
 }
 
 export const skillService = new SkillService()
 
-function isAccomplished(user, skill) {
-    return user.skills.fit.includes(skill.id) ? true : user.skills.unfit.includes(skill.id) ? false : null
+function evaluate(user, skill) {
+    return user.skills.fit.includes(skill.id) ? skillQualifications.QUALIFIED
+        : user.skills.unfit.includes(skill.id) ? skillQualifications.NOT_QUALIFIED
+            : user.skills.notInterested.includes(skill.id) ? skillQualifications.NOT_INTERESTED
+                : null
 }
-

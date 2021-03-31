@@ -1,6 +1,7 @@
 import { useMemo } from 'react'
-import { Table, SelectColumnFilter, TextSearchColumnFilter } from '../table/table';
+import { Table, SelectColumnFilter, TextSearchColumnFilter } from '../table/table'
 import { Link } from 'react-router-dom'
+import { skillQualifications } from './skill-qualifications'
 import './skill-table.css'
 
 export default function SkillTable(props) {
@@ -68,8 +69,10 @@ export default function SkillTable(props) {
 }
 
 function qualifiedMapper(d) {
-    if (d.accomplished === null) return "Not evaluated"
-    return d.accomplished ? "Yes" : "No"
+    return d.qualification === skillQualifications.QUALIFIED ? "Yes"
+        : d.qualification === skillQualifications.NOT_QUALIFIED ? "No"
+            : d.qualification === skillQualifications.NOT_INTERESTED ? "Not interested"
+                : "Not evaluated"
 }
 
 function publishedMapper(d) {

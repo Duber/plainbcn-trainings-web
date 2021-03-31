@@ -12,7 +12,6 @@ env:
   REACT_APP_AUTH_SCOPE: ${{ secrets.REACT_APP_AUTH_SCOPE }}
   REACT_APP_API_URL: ${{ secrets.REACT_APP_API_URL }}
   REACT_APP_FREETRACK_FORM: ${{ secrets.REACT_APP_FREETRACK_FORM }}
-  REACT_APP_SKILL_FLAGS_SELFEVALUATION: false
 
 jobs:
   build:
@@ -26,7 +25,7 @@ jobs:
           password: ${{ secrets.ACR_PASSWORD }}
 
       - run: |
-          docker build . -t ${{ secrets.ACR_NAME }}/plainbcntrainingsweb:${{ github.sha }} -t ${{ secrets.ACR_NAME }}/plainbcntrainingsweb:latest --build-arg REACT_APP_APPINSIGHTS_INSTRUMENTATIONKEY --build-arg REACT_APP_AUTH_AAD_AUTHORITY --build-arg REACT_APP_AUTH_CLIENTID --build-arg REACT_APP_AUTH_REDIRECTURL --build-arg REACT_APP_AUTH_SCOPE --build-arg REACT_APP_API_URL --build-arg REACT_APP_FREETRACK_FORM --build-arg REACT_APP_SKILL_FLAGS_SELFEVALUATION
+          docker build . -t ${{ secrets.ACR_NAME }}/plainbcntrainingsweb:${{ github.sha }} -t ${{ secrets.ACR_NAME }}/plainbcntrainingsweb:latest --build-arg REACT_APP_APPINSIGHTS_INSTRUMENTATIONKEY --build-arg REACT_APP_AUTH_AAD_AUTHORITY --build-arg REACT_APP_AUTH_CLIENTID --build-arg REACT_APP_AUTH_REDIRECTURL --build-arg REACT_APP_AUTH_SCOPE --build-arg REACT_APP_API_URL --build-arg REACT_APP_FREETRACK_FORM
           docker push ${{ secrets.ACR_NAME }}/plainbcntrainingsweb:latest
           docker push ${{ secrets.ACR_NAME }}/plainbcntrainingsweb:${{ github.sha }}
           

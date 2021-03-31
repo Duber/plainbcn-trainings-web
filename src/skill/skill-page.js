@@ -1,7 +1,6 @@
-import { useState, useMemo, useEffect, Fragment } from 'react'
+import { useState, useMemo, useEffect } from 'react'
 import './skill-page.css'
 import SkillTable from './skill-table'
-import SkillModal from './skill-modal'
 import { skillService } from './skill-service'
 
 export default function SkillPage() {
@@ -16,16 +15,13 @@ export default function SkillPage() {
     }, [])
 
     return (
-        <Fragment>
-            <SkillModal data={data} />
-            <div className="container-fluid">
-                <div className="row">
-                    <div className="col">
-                        <SkillTable data={sortedData} />
-                    </div>
+        <div className="container-fluid">
+            <div className="row">
+                <div className="col">
+                    <SkillTable data={sortedData} />
                 </div>
             </div>
-        </Fragment>
+        </div>
     );
 }
 
