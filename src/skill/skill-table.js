@@ -12,6 +12,10 @@ export default function SkillTable(props) {
         hiddenColumns: ['id', 'scope']
     }
 
+    function QualifiedFilterFn(rows, id, value){
+        return rows.filter(r => r.values[id] === value)
+    }
+
     const columns = useMemo(() => [
         {
             Header: 'Area',
@@ -43,7 +47,8 @@ export default function SkillTable(props) {
             Header: 'Qualified?',
             accessor: d => qualifiedMapper(d),
             Filter: SelectColumnFilter,
-            width: "10vmax"
+            width: "10vmax",
+            filter: QualifiedFilterFn
         },
         {
             id: 'id',
